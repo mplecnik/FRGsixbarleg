@@ -47,13 +47,15 @@
 
 \title{Large Scale Root Finding for the Kinematic Design of Mechanisms with Prescribed Dynamic Behavior}
 
+\title{Large Scale Root Finding for the Kinematic Design of Mechanisms with Desired Dynamic Behavior}
+
 
 
 \author{Mark~M.~Plecnik %,~\IEEEmembership{Member,~IEEE,}
         and~Ronald~S.~Fearing,~\IEEEmembership{Member,~IEEE}% <-this % stops a space
-\thanks{M.~Plecnik is a postdoctoral scholar in the Biomimetic Millisystems Lab at the University of California, Berkeley, CA, 94720 USA e-mail: {\tt\small mplecnik@berkeley.edu}}% <-this % stops a space
+\thanks{M.~Plecnik is an assistant professor in the Department of Aerospace and Mechanical Engineering at the University of Notre Dame, IN, 46556 USA e-mail: {\tt\small plecnikmark@nd.edu}}% <-this % stops a space
 \thanks{R.~S.~Fearing is director of the Biomimetic Millisystems Lab and a professor in the Department of Electrical Engineering \& Computer Science, University of California, Berkeley, CA, 94720 USA e-mail: {\tt\small ronf@eecs.berkeley.edu}}% <-this % stops a space
-\thanks{Manuscript received November xx, 2018; revised Month xx, 20xx.}}
+\thanks{Manuscript received January xx, 2019; revised Month xx, 2019.}}
 
 % The paper headers
 \markboth{IEEE Transactions on Robotics,~Vol.~xx, No.~xx, Month~20xx}%
@@ -62,11 +64,23 @@
 \maketitle
 
 \begin{abstract}
-The abstract goes here.
+Designing a robotic mechanism to perform some desired dynamic behavior under limited actuation power is a challenge.
+Descriptions of dynamic requirements inherently exist in the time domain while extant mechanism synthesis techniques are predominantly geometric in nature.
+To bridge this gap, we consider the dynamics of a simplified ``mock-up'' model of a motor acting through a spring and mechanism to push an inertia.
+This model excludes the mechanism's dimensions and topology in place of user-defined mechanism characteristics.
+The characteristics that produce desired dynamic behavior serve as a goal for a to-be-designed mechanism discovered during subsequent kinematic synthesis.
+Following this, the synthesis method employed must be capable of sufficiently matching user-defined nonlinearities.
+Linkages of the six-bar topology provide this capability but are challenged with design equations of very high degree that have not been solved before.
+In this work, we solve one such system of design equations using the Finite Root Generation technique.
+Our approach is motivated by an application for small legged robots to increase power density through kinematic design rather than actuator sizing.
+While not possible for a directly driven mechanism, we show how this is done using series-elastic actuation.
+We design leg mechanisms capable of continuously recycling a foot path while producing locomotive power within a single stride beyond its actuator's limit.
+Candidate designs are presented that are capable of producing 3.0 times the actuator's power in simulation.
+Experimental results of one such mechanism demonstrated a decrease from the ideal down to 2.6 times the actuator's power.
 \end{abstract}
 
 \begin{IEEEkeywords}
-IEEE, IEEEtran, journal, \LaTeX, paper, template.
+Mechanism dynamics, kinematic synthesis, robot design
 \end{IEEEkeywords}
 
 % For peerreview papers, this IEEEtran command inserts a page break and
@@ -96,7 +110,7 @@ The leading approaches are based in optimization and intuition.
 We demonstrate a method that excludes the former and lessens dependence on the latter.
 This work is enabled by a new algorithm in numerical homotopy continuation that can find nearly complete solution sets of highly nonlinear systems of equations.
 %
-The connection to design occurs as these systems of equations comprise of geometric design constraints, and their variables are design parameters.
+The connection to design occurs as these systems of equations comprise geometric design constraints, and their variables are design parameters.
 Rather than search through the design space for a set of parameters that satisfy all constraints and minimize some objective, design constraints are posed as systems with isolated roots, where gathering roots is equivalent to compiling candidate design parameters.  The result is a thorough exploration of the design space.
 
 
@@ -175,10 +189,10 @@ Later, Manoochehri and Seireg \cite{manoochehriComputerBasedMethodologyForm1990}
 Another dynamic consideration is the presence of vibrations in high speed machinery.  
 Matthew and Tesar \cite{matthewCamSystemDesign1976} considered the effects of vibrations and inertial forces on cam design.
 Li and Kota \cite{liDynamicAnalysisCompliant2002} analyzed the frequency response of a micro machined stroke amplifying mechanism for an electrostatic actuator and conducted sensitivity analyses useful for synthesis.
-Motivated by their investigation of parallel manipulators, Martini et al. \cite{martiniElastodynamicBehaviorBalanced2014} study mass balanced and elastically compensated closed chains through the addition of weights and springs.
+Motivated by their investigation of parallel manipulators, Martini et al. \cite{martiniElastodynamicBehaviorBalanced2014} studied mass balanced and elastically compensated closed chains through the addition of weights and springs.
 Design methods that consider the kineto-elastodynamic effects in mechanisms were presented by Imam and Sandor \cite{imamHighSpeedMechanismDesign1975}.
-Tantanawat and Kota \cite{tantanawatDesignCompliantMechanisms2007} investigated the benefits of strain energy storage in the dynamic performance of a compliant flapping mechanism.
-
+Several authors have investigated improving compliant wing flapping mechanisms through careful design.
+Baek et al. \cite{baekEfficientResonantDrive2009} consider the use of resonance to reduce battery consumption, Khatait et al. \cite{khataitCompliantDesignFlapping2006} minimized peak driving torque, and Tantanawat \& Kota \cite{tantanawatDesignCompliantMechanisms2007} investigated the benefits of dynamic strain energy storage.
 
 
 %A motivation for this work is mechanism design for dynamic mobile robots.
@@ -203,12 +217,12 @@ Zarrouk et al. \cite{zarroukDynamicLeggedLocomotion2015} addressed the need of h
 The challenges of legged robots listed by Buehler \cite{buehlerDynamicLocomotionOne2002} include underactuated dynamics, friction limited horizontal ground forces, short stance times to apply control, bandwidth limitations, and limited power/energy densities of commercial actuators.
 Collins et al. \cite{collinsEfficientBipedalRobots2005} leveraged passive-dynamics to create robots that mimic human walking with simple actuators that do not require precise joint-angle control.
 Curran et al. \cite{curranDesignSeriesElasticActuators2008} indicated the role of series-elastic actuation in decoupling the limits of a DC motor from a dynamic task.
-Semini et al. \cite{seminiDesignHyQHydraulically2011} stress the importance of high powered actuators.
+Semini et al. \cite{seminiDesignHyQHydraulically2011} stressed the importance of high powered actuators.
 In the analysis of a symmetric five-bar linkage, Kenneally and Koditschek \cite{kenneallyLegDesignEnergy2015} measured performance according to the conversion of battery energy into body energy, the minimization of touchdown losses, and the storing/return of energy during stance.
 Blackman et al. \cite{blackmanLegDesignRunning2017} extended their analysis, highlighting the ability of this symmetric five-bar to achieve greater speeds and stability in one configuration, but greater jump height in another.
 Brown et al. \cite{brownDesignMethodologyLinkage2017} analyzed the ability of this five-bar and other linkage designs to balance workloads between motors.
 Kalouche \cite{kaloucheGOATLeggedRobot2017} designed a spatial linkage based on this five-bar.
-Wensing et al. \cite{wensingProprioceptiveActuatorDesign2017} demonstrated the importance of torque density, high-bandwidth force control, and impact mitigation in quadrupedal running robots.
+Wensing et al. \cite{wensingProprioceptiveActuatorDesign2017} demonstrated the importance of torque density, high-bandwidth force control, and impact mitigation in a quadrupedal running robot.
 
 
 
@@ -272,6 +286,13 @@ The roots obtained from this solution serve as an instrument to efficiently re-s
 We demonstrate this in Section \ref{sec:leg_app} by applying the results of FRG to the design of a leg mechanism that modulates power beyond its motors output during a fully rotatable running motion.
 
 
+\begin{figure}[!b]
+\centering
+\includegraphics[width=1\linewidth]{dynamic_model}
+\caption{A mock-up dynamic system used to inform desirable kinematic properties of a to-be-designed linkage.  The fixed motor is connected in series with a spring to an input crank.  Without any linkage existing yet, a user defined angle-arclength relationship describes how torques at the crank transform to forces at the masses.}
+\label{dynamic_model}
+\end{figure}
+
 
 \section{Dynamic Mock-Up}
 \label{sec:dynamic_mock-up}
@@ -282,12 +303,7 @@ This torque is transformed by the mechanical advantage of a to-be-designed linka
 The direction of $F_t$ lies tangent to a point path $\mathcal{C}$ constrained by the to-be-designed linkage.
 
 
-\begin{figure}[!t]
-\centering
-\includegraphics[width=1\linewidth]{dynamic_model}
-\caption{A mock-up dynamic system used to inform desirable kinematic properties of a to-be-designed linkage.  The fixed motor is connected in series with a spring to an input crank.  Without any linkage existing yet, a user defined angle-arclength relationship describes how torques at the crank transform to forces at the masses.}
-\label{dynamic_model}
-\end{figure}
+
 
 
 \subsection{Specifying Mechanism Characteristics}
@@ -312,7 +328,7 @@ We choose the Fourier-based interpolation method used in \cite{plecnikControllin
 \label{clickspec}
 \end{figure}
 
-For example, the red points shown in Fig. \ref{clickspec_path} were clicked with a mouse.  The interpolated curve is parameterized by the Fourier series,
+For example, the red points shown in Fig. \ref{clickspec_path} were entered manually with a computer mouse.  The interpolated curve is parameterized by the Fourier series,
 %\begin{equation}
 %\begin{tabular}{cr}
 %\multirow{3}[0]{*}{$\mathcal{C} = \begin{Bmatrix} \tilde{x}(t) \\ \tilde{y}(t) \end{Bmatrix}, \hspace{2mm} $}
@@ -327,7 +343,7 @@ For example, the red points shown in Fig. \ref{clickspec_path} were clicked with
 \label{fourier_interp_path}
 \end{align}
 %such that $\mathcal{C} = \{ (u,v) \;|\; u = \tilde{x}(t),\; v = \tilde{y}(t) \;\forall\; t \in [0,1] \}$
-such that $\mathcal{C} = \left\lbrace \left( \tilde{x}(t), \tilde{y}(t) \right) |\; \tau \in [0,1] \right\rbrace$.
+such that $\mathcal{C} = \left\lbrace \left( \tilde{x}(\tau), \tilde{y}(\tau) \right) |\; \tau \in [0,1] \right\rbrace$.
 The values of Fourier coefficients for the example problem are displayed in Appendix \ref{app:fourier_coefficients}.
 Order $o$ may be freely specified.
 
@@ -342,7 +358,7 @@ y(s) = \tilde{y}(\tau(s)).
 Eqn. (\ref{fourier_interp_path_arc}) is valid for $s=[0,s_\text{total}]$, the arclength of the entire closed curve.
 
 We follow a similar process for specifying mechanical advantage with a few modifications.
-First, mechanical advantage $\gamma$ is defined as a function of normalized arclength $\hat{s}$ so that points are clicked with a mouse in the $\hat{s}$-$\gamma$ plane shown in Fig. \ref{clickspec_ma}.
+First, mechanical advantage $\gamma$ is defined as a function of normalized arclength $\hat{s}$ so that points are entered manually with a mouse in the $\hat{s}$-$\gamma$ plane shown in Fig. \ref{clickspec_ma}.
 Second, the endpoints at $\hat{s}\!=\!0$ and $\hat{s}\!=\!1$ are always specified and share the same $\gamma$ value.
 And third, after interpolation the resulting Fourier series $\gamma(\hat{s})$ must be vertically shifted.
 For a fully rotatable input crank, the area under $\gamma(\hat{s})$ must be $2\pi$.
@@ -354,6 +370,8 @@ For a full traversal of $\mathcal{C}$, the crank must rotate $2\pi$, or rather
 \begin{equation}
 2\pi = \int_{0}^{1} \gamma(\hat{s}) d\hat{s}.
 \end{equation}
+The Fourier coefficients of $\gamma(\hat{s})$ are given in Appendix \ref{app:fourier_coefficients} as values $(\alpha_k, \beta_k)$.
+
 Next, function $\gamma(\hat{s})$ is rewritten to accept a non-normalized arclength $s$ argument,
 \begin{equation}
 \gamma(s) := \frac{\gamma(s/s_\text{total})}{s_\text{total}}
@@ -412,7 +430,7 @@ else
 \begin{equation}
 F_b = 0.
 \end{equation}
-$F_n$ is the constraint force normal to $\mathcal{C}$, $F_b$ is the reaction force between $m$ and $M$, $(x,y)$ are the coordinates of $m$ constrained to $\mathcal{C}$ according to Eqn. (\ref{fourier_interp_path_arc}), $X$ is the coordinate of $M$, and $\psi$ is the tangency angle of $\mathcal{C}$ at $(x,y)$, that is
+$F_n$ is the constraint force normal to $\mathcal{C}$, $F_b$ is the reaction force between $m$ and $M$, $(x,y)$ are the coordinates of $m$ constrained to $\mathcal{C}$ according to Eqn. (\ref{fourier_interp_path_arc}), $X$ is the coordinate of $M$, and $\nu$ is the tangency angle of $\mathcal{C}$ at $(x,y)$, that is
 \begin{equation}
 \nu = \arctan\frac{\dot{y}}{\dot{x}}.
 \label{tangency_angle}
@@ -434,6 +452,15 @@ These specifications were informed by intuition, past experience, and bio-inspir
 \caption{Simulation results of the model shown in Fig. \ref{dynamic_model} for the mechanism properties shown in Fig. \ref{clickspec}.  The mechanical power output associated with the mass surpasses the motor's limit.}
 \label{simulation_results}
 \end{figure}
+
+
+
+
+
+The values of physical parameters are displayed in Table \ref{simulation_parameters}.
+The results of numerical simulation are shown in Fig. \ref{simulation_results}.
+Simulation shows that modulation of motor power by a factor of 3.0 is possible.
+A leg designed with these mechanical characteristics might deliver 95 mJ of kinetic energy in one stance phase.
 
 
 \begin{table}[h]
@@ -458,19 +485,12 @@ $M$ & 0.23 & kg & Typical mass of small robot \\
 \end{tabular}
 \end{table}
 
-
-The values of physical parameters are displayed in Table \ref{simulation_parameters}.
-The results of numerical simulation are shown in Fig. \ref{simulation_results}.
-Simulation shows that modulation of motor power by a factor of 3.0 is possible.
-A leg designed with these mechanical characteristics might deliver 95 mJ of kinetic energy in one stance phase.
-
-
 \section{Synthesis Equations}
 \label{sec:synth_eq}
 
 After determining desired mechanism characteristics in Section \ref{sec:dynamic_mock-up}, our objective is to synthesize a linkage that exhibits those characteristics.
 In particular, we desire a physical instantiation of $x(s)$, $y(s)$, and $\phi(s)$.
-The latter of the three is desired more so for its derivative, $\gamma(s)$, rather than itself, but we employ it directly as a design goal nonetheless.
+The latter of the three is desired more so for its derivative, $\gamma(s)$, rather than its direct curve, but we employ it directly as a design goal nonetheless.
 The design problem of finding a linkage that creates a desired endpoint path is called \emph{path generation}.
 When this path is additionally coordinated with the angle of an input crank, this problem is sometimes called \emph{timed curve generation} \cite{dijksmanMotionGeometryMechanisms1976}.
 
@@ -489,7 +509,7 @@ Later in Section \ref{sec:frg}, these equations are solved for the first time.
 A Stephenson II six-bar linkage is drawn in Fig. \ref{synthesis_diagram}.  It is composed of seven joints.  Fig. \ref{synthesis_diagram} displays a reference configuration and the $j^\text{th}$ displaced configuration.  There are $N-1$ displaced configurations.  Joint coordinates in the reference configuration are stored in the real and imaginary components of the complex numbers $A$, $B$, $C$, $D$, $F$, $G$, and $H$.  The coordinates of the end effector point in the reference configuration is $P_0$ and in the $j^\text{th}$ displaced configuration is $P_j$.  The angular displacement of each of the five moving links is measured by $\phi_j$, $\rho_j$, $\psi_j$, $\theta_j$, and $\mu_j$ as marked in Fig. \ref{synthesis_diagram}.
 \medmuskip=4mu
 
-\begin{figure}[!t]
+\begin{figure}[!b]
 \centering
 \includegraphics[width=1\linewidth]{synthesis_diagram}
 \caption{Diagram describing the notation used in the synthesis formulation.  Linkage pivots in a reference configuration are marked with complex numbers $A$, $B$, $C$, $D$, $F$, $G$, and $H$.  The $j^\text{th}$ displaced configuration is shown here.}
@@ -508,7 +528,7 @@ Planar vectors written in complex form may be rotated by multiplication with rot
 For our synthesis problem of interest, we take it that all values of crank rotation $Q_j$, $j=1,\ldots,N-1$ and end point position $P_j$, $j=0,\ldots,N-1$ are known.  All other symbols are variables to be solved for or eliminated.  Note the index $j=0$ does not exist for $Q_j$ because this simply refers to the reference configuration.
 \medmuskip=4mu
 
-To begin deriving the synthesis equations, first form three independent vector loop equations from Fig. \ref{clickspec},
+To begin deriving the synthesis equations, first form three independent vector loop equations from Fig. \ref{synthesis_diagram},
 \medmuskip=2mu
 \begin{align}
 &R_j(H-C) = P_j - A - Q_j(C-A) - U_j(P_0-H) \label{loopR1}\\
@@ -623,9 +643,9 @@ Then, a homotopy between the systems is constructed and start system roots, \emp
 Through this method all finite roots of the target system will be found.
 
 Start systems are commonly constructed as products of linear expressions in order to easily obtain all their roots.
-By picking one linear expression from each equation, then solving the resulting square linear system, a startpoint is found.  
+By picking one linear expression from each equation, setting them equal to zero, then solving the resulting square linear system, a startpoint is found.  
 Doing this for all valid combinations of linear expressions finds all startpoints.
-The problem arises that a start system constructed this way tends to comprise of many more monomials than the target system, which tends to have a sparse structure for the problems of interest.
+The problem arises that a start system constructed this way tends to comprise many more monomials than the target system, which tends to have a sparse structure for the problems of interest.
 This usually means there will be drastically more finite startpoints than endpoints, with the far majority of homotopy paths tracking toward roots at infinity.
 
 
@@ -633,16 +653,16 @@ FRG solves this problem by constructing start systems with the exact monomial st
 This is accomplished by generating a random linkage and extracting a start system from its motion and a startpoint from its dimensions.
 This single startpoint will indeed track to a finite root of the target system.
 To get a second root, this process is repeated.
-As the finite target root set we aim to obtain is very large, chances are that this second startpoint will track to a different endpoint, with no guarantee.
+As the set of finite target roots we aim to obtain is very large, chances are that this second startpoint will track to a different endpoint, with no guarantee.
 Repeating this process, roots are accumulated.
 As FRG trials progress, eventually the odds of acquiring a new root become unfavorable.
 More and more duplicate roots are computed.
 FRG trades away infinite root computations for duplicate root computations.  
-For sparse systems, the latter tends to be far fewer than the former, making it a good trade.
+For sparse systems, the latter tends to be far fewer than the former, making it a good trade-off.
 The frequency of duplicate roots was characterized in \cite{plecnikStudyFindingFinite2017}.
 Tracking their occurrence allows an in-process estimate of the percentage of the total root set that has been obtained.
 
-FRG mediates additional computation savings by exploiting known solution structures in a straightforward way.
+FRG provides additional computation savings by exploiting known solution structures in a straightforward way.
 For linkage synthesis equations, this structure is primarily provided by the presence of linkage cognates.
 The cognate of a single degree-of-freedom linkage is another linkage with different dimensions that exactly reproduces some aspect of the original linkage's continuous motion.
 For a given linkage type (e.g. Stephenson II) and motion of interest (e.g. timed curve generation), the presence and number of cognates is often known.
@@ -716,7 +736,7 @@ We choose $R_j\*U_j$, $j=1,\ldots,7$, the complex number associated with angle $
 It may be noted that the complexity of the solution process of the forward kinematics is dependent on the choice of a specified configuration parameter.
 Perhaps intuitively, $R\*U$ is a good choice because it defines one angle of the floating four-bar $DGHF$, which segments calculations to one variable at a time after that.
 Solving the forward kinematics equations provides all remaining values in $\mathbf{z}$ and $\mathbf{q}$.
-A homotopy path may then be tracked from the startpoint $\mathbf{z}$ that solves the system defined by $\mathbf{q}$ to a finite root that solves our target system, Eqn. (\ref{system}).
+A homotopy path may then be tracked from the startpoint $\mathbf{z}$ that solves the system defined by $\mathbf{q}$ to a finite root that solves a target system defined by a different set of parameters.
 
 
 
@@ -848,7 +868,7 @@ To find all roots, we only must find all cognate sets, of which there are half a
 
 Using the start system construction method of Section \ref{sec:start_sys} and exploiting the cognate structure of Section \ref{sec:cognates}, FRG was applied to find the ab initio roots $\mathbf{z}$ of a numerically general target system $\mathcal{S}(\mathbf{z},\mathbf{q}_1)=0$.
 Target parameters $\mathbf{q}_1$ were randomly generated and are printed in Appendix \ref{app:fpm}.
-After generating this ab initio solution, these roots were used repeatedly in conjunction  with the parameter homotopy method to solve for any other system $\mathcal{S}(\mathbf{z},\mathbf{q}_2)=0$, where $\mathbf{q}_2$ might be defined by a specific synthesis task.
+After generating this ab initio solution, these roots can be used repeatedly in conjunction  with the parameter homotopy method to solve for any other system $\mathcal{S}(\mathbf{z},\mathbf{q}_2)=0$, where $\mathbf{q}_2$ might be defined by a specific synthesis task.
 In Section \ref{sec:leg_app}, we will define $\mathbf{q}_2$ according to analyses in Section \ref{sec:dynamic_mock-up}, to design a novel machine.
 
 
@@ -862,7 +882,7 @@ Path tracking was performed using a predictor-corrector technique based on Runge
 This technique is presented in Appendix \ref{app:tracking}.
 
 
-\begin{figure}[!t]
+\begin{figure}[!b]
 \centering
 \includegraphics[scale=0.6]{frg_results}
 \caption{The accumulation of roots over the procession of the FRG algorithgm.  An estimated 99.0\% of roots were found in $3.56 \times 10^6$ trials.  To find 99.9\% would take about 50\% more computational effort.}
@@ -893,7 +913,7 @@ In this way, the ab initio root set obtained in Section \ref{sec:computations} s
 
 
 
-To demonstrate this process, we design a leg mechanism for a small running robot capable of producing propulsive motions with energetics beyond its motor's power output.
+To demonstrate this process, we design a leg mechanism for a small running robot capable of producing propulsive motions with energetics beyond its motor's power limit.
 We continue from the task specification introduced in Section \ref{sec:dynamic_mock-up}, where we established a cyclic path and coordinated crank angle function that would dynamically modulate the power output of a series-elastic actuator under load to increase kinetic energy during push-off of a single stance phase.
 This task was transferred to a vector $\mathbf{q}_\text{task}$ by picking eight end effector positions $(x_j,y_j)$ and coordinated crank angles $\phi_j$, printed in Table \ref{task_parameters}.  Components of $\mathbf{q}_\text{task}$ are specified as
 \begin{align}
@@ -970,14 +990,26 @@ That being the case, they produce the same point path with the same variation of
 Therefore, the plots printed under each pair in Fig. \ref{synth_results} describe both linkages above.
 
 
+
+
+
+The cycling foot path is broken into three regions.  
+First, the foot point makes ground contact and mechanical advantage decreases, nearly stalling motion and energizing the series-elastic element.
+Second, while still in stance mechanical advantage increases, converting elastic energy into high-powered propulsion.
+And third, the foot goes out of contact and recycles back to its starting position.
+Although only a single low mechanical advantage region was desired, a second is seen in the unloaded regions of Fig. \ref{synth_results}.
+It was common to nearly all designs that had the foot path entirely below the ground pivots, that installing a low mechanical advantage region on one part of the curve begot another low mechanical advantage region elsewhere.
+It is unclear whether it is possible to exclude this second region and maintain pivots above the foot path.
+This just might be the circumstance of the design space we are navigating.
+As the second low spot appears in the unloaded region, it is not problematic.
+
+
 \begin{figure}[!t]
 \centering
 \includegraphics[scale=0.3]{prototype_overlay}
 \caption{The linkage drawn in Fig. \ref{synth_results}a was constructed.}
 \label{prototype_overlay}
 \end{figure}
-
-
 
 \begin{figure}[!t]
 \centering
@@ -994,25 +1026,8 @@ Therefore, the plots printed under each pair in Fig. \ref{synth_results} describ
 \end{figure}
 
 
-The cycling foot path is broken into three regions.  
-First, the foot point makes ground contact and mechanical advantage decreases, nearly stalling motion and energizing the series-elastic element.
-Second, while still in stance mechanical advantage increases, converting elastic energy into high-powered propulsion.
-And third, the foot goes out of contact and recycles back to its starting position.
-Although only a single low mechanical advantage region was desired, a second is seen in the unloaded regions of Fig. \ref{synth_results}.
-It was common to nearly all designs that had the foot path entirely below the ground pivots, that installing a low mechanical advantage region on one part of the curve begot another low mechanical advantage region elsewhere.
-It is unclear whether it is possible to exclude this second region and maintain pivots above the foot path.
-This just might be the circumstance of the design space we are navigating.
-Anyway, as the second low spot appears in the unloaded region, it is not problematic.
-
-
-
-
 %These points may be taken unaltered or modified using local optimization.
 %Simulation ensures designs produce the desired dynamic behavior.
-
-
-
-
 
 
 
@@ -1021,7 +1036,7 @@ Anyway, as the second low spot appears in the unloaded region, it is not problem
 To validate design results, the solution drawn in Fig. \ref{synth_results}a was built and tested, pictured in Fig. \ref{prototype_overlay}.
 More extensive test results are presented in \cite{plecnikAdjustablePowerModulation2019}.
 The prototype consists of a 1 W Pololu motor that twists a torsion spring (cylindrical cut of latex) which rotates the input crank of a 3D printed linkage mounted to a wooden board.
-An experiment was set up similar to the dynamics illustrated in Fig. \ref{dynamic_model} where the leg mechanism pushes a weight.
+An experiment was set up similar to the dynamics illustrated in Fig. \ref{dynamic_model} where the leg mechanism pushes a weight, see Fig. \ref{prototype_experiment}.
 The leg was able to modulate mechanical power 2.6 times beyond the motor's output.
 Simulation indicated a factor of 3.0 times could be possible.
 Sources of energy loss include the movement of unaccounted link inertias and friction.
@@ -1117,8 +1132,20 @@ Sources of energy loss include the movement of unaccounted link inertias and fri
 \section{Conclusion}
 \label{sec:conclusion}
 
+We have presented a method for designing the dynamic behavior of a loaded mechanism.
+First, we analyzed a simplified model of our proposed system in order to discover the mechanism characteristics that would result in the desired dynamics.
+The model was run according to user-defined mechanism characteristics in the absence of a mechanism design.
+Instead, these characteristics serve as a design goal for a to-be-designed mechanism found during a subsequent kinematic synthesis step.
+The prescribed characteristics included a single degree-of-freedom point path and a coordinated mechanical advantage profile.
+Kinematic synthesis was executed to discover six-bar linkages that exhibit the desired mechanism characteristics.
+These characteristics were encoded into design constraints resulting in a highly nonlinear system of design equations.
+This system of equations was solved for the first time in this paper using the Finite Root Generation technique.
+The generation of a nearly complete solution set of such a large system allows an exploration of the design space to be conducted.
+We applied our methodology to the design of a leg mechanism for a small running robot powered by a series-elastic actuator.
+The leg mechanism is capable of propelling itself forward at powers beyond its motor's limit while recycling foot position during every stride with the motor only rotating in the forward direction.
+A few linkage design solutions were presented, one of which was built and tested.
+In simulation, it achieved a propulsive power 3.0 times its motor's limit.  In experiment, propulsive power was 2.6 times its motor's limit.
 
-The conclusion goes here.
 
 
 \appendices
@@ -1127,7 +1154,7 @@ The conclusion goes here.
 
 \vspace{2mm}
 
-Fourier coefficients for example's path
+Fourier coefficients for the path displayed in Fig.~\ref{clickspec_path}.
 
 \vspace{2mm}
 
@@ -1156,7 +1183,7 @@ $k$ & \multicolumn{1}{c}{$a_k$} & \multicolumn{1}{c}{$b_k$} & \multicolumn{1}{c}
 
 \vspace{6mm}
 
-Fourier coefficients for example's mechanical advantage
+Fourier coefficients for the mechanical advantage curve displayed in Fig.~\ref{clickspec_ma}.
 
 \vspace{2mm}
 
@@ -1412,7 +1439,7 @@ t_{k+1} = t_k - \mathbf{\Gamma}_{k,n+2} \cdot
 where $\mathbf{\Gamma}_{k,n+2}$ is the last row of $[\,\Gamma\,]_k$.  At this point, everything in Eqn. (\ref{last_row}) has been numerically evaluated except $t_{k+1}$ and $\delta$.  
 We set $t_{k+1}$ equal to the last component of $\tilde{\mathbf{Y}}_n$, then solve for $\delta$, which is straightforward.  
 Now we are able to evaluate $\mathbf{Y}_{k+1}$ in Eqn. (\ref{Newton_update}) and Newton's method proceeds as usual.  
-The value is converges to is the next homotopy path point $\mathbf{Y}_n$.  
+The value it converges to is the next homotopy path point $\mathbf{Y}_n$.  
 An accurate tangent vector $\mathbf{V}_n$ is also produced by Newton's method.
 The predictor-corrector path tracking process is repeated from these points.
 When $t=1$ is reached, stop conditions for the Newton corrector are set to obtain more accurate solutions.
@@ -1470,14 +1497,14 @@ We gratefully acknowledge the support of the National Science Foundation through
 %\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{mshell}}]{Michael Shell}
 % or if you just want to reserve a space for a photo:
 
-\begin{IEEEbiography}{Mark Plecnik}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-\end{IEEEbiography}
-
-
-\begin{IEEEbiography}{Ronald S. Fearing}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-\end{IEEEbiography}
+%\begin{IEEEbiography}{Mark Plecnik}
+%Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+%\end{IEEEbiography}
+%
+%
+%\begin{IEEEbiography}{Ronald S. Fearing}
+%Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+%\end{IEEEbiography}
 
 
 \end{document}
