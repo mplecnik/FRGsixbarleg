@@ -58,7 +58,7 @@
 \thanks{M.~Plecnik is with the Department of Aerospace and Mechanical Engineering, University of Notre Dame, IN, 46556 USA e-mail: {\tt\small plecnikmark@nd.edu}}% <-this % stops a space
 \thanks{R.~S.~Fearing is with the Department of Electrical Engineering and Computer
 Sciences, University of California, Berkeley, CA 94720 USA e-mail: {\tt\small ronf@eecs.berkeley.edu}}% <-this % stops a space
-\thanks{Manuscript received February xx, 2019; revised Month xx, 2019.}}
+\thanks{Manuscript received February 3, 2019; revised Month xx, 2019.}}
 
 % The paper headers
 \markboth{IEEE Transactions on Robotics,~Vol.~xx, No.~xx, Month~20xx}%
@@ -69,22 +69,29 @@ Sciences, University of California, Berkeley, CA 94720 USA e-mail: {\tt\small ro
 \begin{abstract}
 Designing a robotic mechanism to perform some desired dynamic behavior under limited actuation power is a challenge.
 Descriptions of dynamic requirements inherently exist in the time domain while extant mechanism synthesis techniques are predominantly geometric in nature.
-To bridge this gap, we consider the dynamics of a simplified ``mock-up'' model of a motor acting through a spring and mechanism to push an inertia.
-This model excludes the mechanism's dimensions and topology in place of user-defined mechanism characteristics.
-The characteristics that produce desired dynamic behavior serve as a goal for a to-be-designed mechanism discovered during subsequent kinematic synthesis.
+To bridge this gap, we consider the dynamics of a simplified ``mock-up'' model
+%of a motor acting through a spring and mechanism to push an inertia.
+that excludes mechanism dimensions and topology in place of user-defined kinematic characteristics.
+The characteristics that produce the desired dynamic behavior serve as a goal for a to-be-designed mechanism discovered during subsequent kinematic synthesis.
 Following this, the synthesis method employed must be capable of sufficiently matching user-defined nonlinearities.
 Linkages of the six-bar topology provide this capability but are challenged with design equations of very high degree that have not been solved before.
-In this work, we solve one such system of design equations using the Finite Root Generation technique.
-Our approach is motivated by an application for small legged robots to increase power density through kinematic design rather than actuator sizing.
-While not possible for a directly driven mechanism, we show how this is done using series-elastic actuation.
-We design leg mechanisms capable of continuously recycling a foot path while producing locomotive power within a single stride beyond its actuator's limit.
-Candidate designs are presented that are capable of producing 3.0 times the actuator's power in simulation.
-Experimental results of one such mechanism demonstrated a decrease from the ideal down to 2.6 times the actuator's power.
+We solve these equations using the Finite Root Generation technique.
+%Our approach is motivated by an application for small legged robots to increase power density through kinematic design rather than actuator sizing.
+%While not possible for a directly driven mechanism, we show how this is done using series-elastic actuation.
+Our approach is motivated by an application for small legged robots to find a leg mechanism powered by a series elastic actuator capable of recycling a foot path while producing locomotive power within a single stride beyond the actuator's limit.
+%While not possible for a directly driven mechanism, we show how this is done using series-elastic actuation.
+%We design leg mechanisms capable of continuously recycling a foot path while producing locomotive power within a single stride beyond its actuator's limit.
+%Candidate designs are presented that are capable of producing 3.0 times the actuator's power in simulation.
+%Experimental results of one such mechanism demonstrated a decrease from the ideal down to 2.6 times the actuator's power.
 \end{abstract}
 
+
 \begin{IEEEkeywords}
-Mechanism dynamics, kinematic synthesis, robot design
+%Mechanism dynamics, kinematic synthesis, robot design, homotopy continuation
+Mechanism design, computational geometry, dynamics, kinematics
 \end{IEEEkeywords}
+
+
 
 % For peerreview papers, this IEEEtran command inserts a page break and
 % creates the second title. It will be ignored for other modes.
@@ -1150,10 +1157,10 @@ Sources of energy loss include the movement of unaccounted link inertias and fri
 \label{sec:conclusion}
 
 We have presented a method for designing the dynamic behavior of a loaded mechanism.
-First, we analyzed a simplified model of our proposed system in order to discover the mechanism characteristics that would result in the desired dynamics.
-The model was run according to user-defined mechanism characteristics in the absence of a mechanism design.
-Instead, these characteristics serve as a design goal for a to-be-designed mechanism found during a subsequent kinematic synthesis step.
-The prescribed characteristics included a single degree-of-freedom point path and a coordinated mechanical advantage profile.
+First, we analyzed a simplified model of our proposed system in order to discover the kinematic characteristics that would result in the desired dynamics.
+The model was run according to user-defined kinematic characteristics in the absence of a mechanism design.
+Instead, these characteristics serve as a design goal for a to\nobreakdash-be\nobreakdash-designed mechanism found during a subsequent kinematic synthesis step.
+The prescribed characteristics included a single degree\nobreakdash-of\nobreakdash-freedom point path and a coordinated mechanical advantage profile.
 Kinematic synthesis was executed to discover six-bar linkages that exhibit the desired mechanism characteristics.
 These characteristics were encoded into design constraints resulting in a highly nonlinear system of design equations.
 This system of equations was solved for the first time in this paper using the Finite Root Generation technique.
