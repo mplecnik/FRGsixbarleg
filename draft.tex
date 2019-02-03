@@ -51,11 +51,14 @@
 
 \title{Large Scale Root Finding for \\ Designing Dynamic Machines}
 
+\title{Designing Dynamic Machines \\ Using Large Scale Root Finding}
+
 \author{Mark~M.~Plecnik %,~\IEEEmembership{Member,~IEEE,}
         and~Ronald~S.~Fearing,~\IEEEmembership{Member,~IEEE}% <-this % stops a space
-\thanks{M.~Plecnik is an assistant professor in the Department of Aerospace and Mechanical Engineering at the University of Notre Dame, IN, 46556 USA e-mail: {\tt\small plecnikmark@nd.edu}}% <-this % stops a space
-\thanks{R.~S.~Fearing is director of the Biomimetic Millisystems Lab and a professor in the Department of Electrical Engineering \& Computer Science, University of California, Berkeley, CA, 94720 USA e-mail: {\tt\small ronf@eecs.berkeley.edu}}% <-this % stops a space
-\thanks{Manuscript received January xx, 2019; revised Month xx, 2019.}}
+\thanks{M.~Plecnik is with the Department of Aerospace and Mechanical Engineering, University of Notre Dame, IN, 46556 USA e-mail: {\tt\small plecnikmark@nd.edu}}% <-this % stops a space
+\thanks{R.~S.~Fearing is with the Department of Electrical Engineering and Computer
+Sciences, University of California, Berkeley, CA 94720 USA e-mail: {\tt\small ronf@eecs.berkeley.edu}}% <-this % stops a space
+\thanks{Manuscript received February xx, 2019; revised Month xx, 2019.}}
 
 % The paper headers
 \markboth{IEEE Transactions on Robotics,~Vol.~xx, No.~xx, Month~20xx}%
@@ -271,10 +274,15 @@ The role of homotopy continuation methods in mechanism design traces back to Rot
 After that, more general methods focused on constructing homotopy paths absent of turning points or intersections \cite{zangwillPathwaysSolutionsFixed1981}, handling infinite roots by tracking in projective spaces \cite{wrightFindingAllSolutions1985}, and computing singular endpoints \cite{morganPowerSeriesMethod1992}. %
 Additionally, researchers were interested in increasing the efficiency of computing large root sets by limiting the number of homotopy paths that need to be tracked. %
 The work of Morgan and Sommese \cite{morganHomotopySolvingGeneral1987} lead to \emph{multihomogeneous homotopies} that take advantage of sparse monomial structures.  Variables are split into groups that define a factored start system of fewer roots, reducing the number of homotopy paths to track. %
-Generalizations of this work lead to partitioned linear product homotopy \cite{verscheldeGBQAlgorithmConstructing1993,wiseAlgorithm801POLSYS2000}, general linear product homotopy \cite{verscheldeSymbolicHomotopyConstruction1993,verscheldeAlgorithm795PHCpack1999,suAlgorithm857POLSYS2006}, and polyhedral homotopy \cite{verscheldeHomotopiesExploitingNewton1994}. %
-Hauenstein et al. \cite{hauensteinRegenerationHomotopiesSolving2011} introduced regeneration homotopy, an efficient method that exploits the sparse monomial structure of a system one equation at a time to find all of its isolated solutions. %
-Plecnik and Fearing \cite{plecnikFindingOnlyFinite2017,plecnikStudyFindingFinite2017} introduced the Finite Root Generation method for solving mechanism synthesis equations.  
-This is the solution technique used in this paper.  It institutes a stochastic procedure for generating startpoints that always track to finite roots.
+Generalizations of this work lead to partitioned linear product homotopy \cite{verscheldeGBQAlgorithmConstructingStart1993,wiseAlgorithm801POLSYS2000}, general linear product homotopy \cite{verscheldeSymbolicHomotopyConstruction1993,verscheldeAlgorithm795PHCpack1999,suAlgorithm857POLSYS2006}, and polyhedral homotopy \cite{verscheldeHomotopiesExploitingNewton1994,huberPolyhedralMethodSolving1995,leykinPolyhedralHomotopies2019}. %
+As well, methods have been developed to validate numerical representations of solution sets \cite{hauensteinAlgorithm921AlphaCertified2012,leykinTraceTest2018}.
+
+
+To find complete sets of roots more efficiently Hauenstein et al. \cite{hauensteinRegenerationHomotopiesSolving2011} introduced regeneration homotopy, which exploits the sparse monomial structure of a system one equation at a time to find all of its isolated solutions. %
+Plecnik and Fearing \cite{plecnikFindingOnlyFinite2017,plecnikStudyFindingFinite2017} introduced the Finite Root Generation (FRG) method for collecting the roots of mechanism synthesis systems.  FRG quickly generates startpoints and start systems that track only to finite endpoints, eliminating expensive homotopy paths that diverge to infinity. %
+Baskar and Bandyopadhyay \cite{baskarAlgorithmComputeFinite2019} introduced a technique for collecting roots by tracking homotopy paths between two generic systems.  They generate new roots by permuting the correspondence between solutions at every iteration. %
+Duff et al. \cite{duffSolvingPolynomialSystems} developed a monodromy solver which tracks homotopy paths along the edges of a graph embedded in the parameterized space of a target polynomial system.
+By retracing edges and keeping track of the correspondence of roots at each vertex, they are able to collect roots in a more efficient manner. %
 
 
 
@@ -284,6 +292,10 @@ The mock-up indicates geometric constraints which are encoded into relevant synt
 The FRG method was applied to solve these equations, presented in Section \ref{sec:frg}.
 The roots obtained from this solution serve as an instrument to efficiently re-solve the synthesis equations for different geometric requirements.
 We demonstrate this in Section \ref{sec:leg_app} by applying the results of FRG to the design of a leg mechanism that modulates power beyond its motors output during a fully rotatable running motion.
+
+
+
+
 
 
 \begin{figure}[!b]
@@ -502,12 +514,6 @@ Specifically, we formulate the synthesis equations for a Stephenson II six-bar l
 Later in Section \ref{sec:frg}, these equations are solved for the first time.
 
 
-\subsection{Formulation}
-\label{sec:synth_form}
-
-\medmuskip=2mu
-A Stephenson II six-bar linkage is drawn in Fig. \ref{synthesis_diagram}.  It is composed of seven joints.  Fig. \ref{synthesis_diagram} displays a reference configuration and the $j^\text{th}$ displaced configuration.  There are $N-1$ displaced configurations.  Joint coordinates in the reference configuration are stored in the real and imaginary components of the complex numbers $A$, $B$, $C$, $D$, $F$, $G$, and $H$.  The coordinates of the end effector point in the reference configuration is $P_0$ and in the $j^\text{th}$ displaced configuration is $P_j$.  The angular displacement of each of the five moving links is measured by $\phi_j$, $\rho_j$, $\psi_j$, $\theta_j$, and $\mu_j$ as marked in Fig. \ref{synthesis_diagram}.
-\medmuskip=4mu
 
 \begin{figure}[!b]
 \centering
@@ -515,6 +521,15 @@ A Stephenson II six-bar linkage is drawn in Fig. \ref{synthesis_diagram}.  It is
 \caption{Diagram describing the notation used in the synthesis formulation.  Linkage pivots in a reference configuration are marked with complex numbers $A$, $B$, $C$, $D$, $F$, $G$, and $H$.  The $j^\text{th}$ displaced configuration is shown here.}
 \label{synthesis_diagram}
 \end{figure}
+
+
+\subsection{Formulation}
+\label{sec:synth_form}
+
+\medmuskip=2mu
+A Stephenson II six-bar linkage is drawn in Fig. \ref{synthesis_diagram}.  It is composed of seven joints.  Fig. \ref{synthesis_diagram} displays a reference configuration and the $j^\text{th}$ displaced configuration.  There are $N-1$ displaced configurations.  Joint coordinates in the reference configuration are stored in the real and imaginary components of the complex numbers $A$, $B$, $C$, $D$, $F$, $G$, and $H$.  The coordinates of the end effector point in the reference configuration is $P_0$ and in the $j^\text{th}$ displaced configuration is $P_j$.  The angular displacement of each of the five moving links is measured by $\phi_j$, $\rho_j$, $\psi_j$, $\theta_j$, and $\mu_j$ as marked in Fig. \ref{synthesis_diagram}.
+\medmuskip=4mu
+
 
 
 
@@ -912,17 +927,7 @@ Bringing this all together forms a design process capable of finding six-bar lin
 In this way, the ab initio root set obtained in Section \ref{sec:computations} serves as an instrument for designing dynamic machines.
 
 
-
-To demonstrate this process, we design a leg mechanism for a small running robot capable of producing propulsive motions with energetics beyond its motor's power limit.
-We continue from the task specification introduced in Section \ref{sec:dynamic_mock-up}, where we established a cyclic path and coordinated crank angle function that would dynamically modulate the power output of a series-elastic actuator under load to increase kinetic energy during push-off of a single stance phase.
-This task was transferred to a vector $\mathbf{q}_\text{task}$ by picking eight end effector positions $(x_j,y_j)$ and coordinated crank angles $\phi_j$, printed in Table \ref{task_parameters}.  Components of $\mathbf{q}_\text{task}$ are specified as
-\begin{align}
-P_j &= x_j + iy_j, & \*P_j &= x_j - iy_j, & j&=0,\ldots,7 \nonumber\\
-Q_j &= e^{i\phi_j}, & \*Q_j &= e^{-i\phi_j}, & j&=1,\ldots,7 
-\end{align}
-Note that $(Q_0,\*Q_0)$ is automatically specified as $(1,1)$ without loss of generality, making the number of angles eight.
-
-\begin{table}[h]
+\begin{table}[t]
 \caption{Specification of $\mathbf{q}_\text{task}$ for the leg mechanism example.}
 \label{task_parameters}
 \centering
@@ -940,10 +945,22 @@ $j$ & \multicolumn{2}{c}{$P_j$ (cm)} & \multicolumn{1}{c}{$\phi_j$ (rad)} \\
 \end{tabular}
 \end{table}
 
+
+To demonstrate this process, we design a leg mechanism for a small running robot capable of producing propulsive motions with energetics beyond its motor's power limit.
+We continue from the task specification introduced in Section \ref{sec:dynamic_mock-up}, where we established a cyclic path and coordinated crank angle function that would dynamically modulate the power output of a series-elastic actuator under load to increase kinetic energy during push-off of a single stance phase.
+This task was transferred to a vector $\mathbf{q}_\text{task}$ by picking eight end effector positions $(x_j,y_j)$ and coordinated crank angles $\phi_j$, printed in Table \ref{task_parameters}.  Components of $\mathbf{q}_\text{task}$ are specified as
+\begin{align}
+P_j &= x_j + iy_j, & \*P_j &= x_j - iy_j, & j&=0,\ldots,7 \nonumber\\
+Q_j &= e^{i\phi_j}, & \*Q_j &= e^{-i\phi_j}, & j&=1,\ldots,7 
+\end{align}
+Note that $(Q_0,\*Q_0)$ is automatically specified as $(1,1)$ without loss of generality, making the number of angles eight.
+
+
+
 \begin{figure}[!t]
 \centering
 \includegraphics[scale=0.5]{root_histogram}
-\caption{Condition numbers of Jacobian matrices at the solutions found during the leg mechanism example.  We assume solutions with condition numbers greater than $10^{15}$ are singular.}
+\caption{Condition numbers of Jacobian matrices at the solutions found during the leg mechanism example.  Solutions with condition numbers greater than $10^{15}$ were assumed to be singular.}
 \label{root_histogram}
 \end{figure}
 
@@ -1007,7 +1024,7 @@ As the second low spot appears in the unloaded region, it is not problematic.
 \begin{figure}[!t]
 \centering
 \includegraphics[scale=0.3]{prototype_overlay}
-\caption{The linkage drawn in Fig. \ref{synth_results}a was constructed.}
+\caption{Construction of the linkage drawn in Fig. \ref{synth_results}a.}
 \label{prototype_overlay}
 \end{figure}
 
@@ -1470,7 +1487,6 @@ Tracking continues with $\mathbf{Y}$ replaced with $\mathbf{Y}_\text{new} = \beg
 \section*{Acknowledgment}
 
 The authors kindly thank Katherine Fearing for construction of the prototype linkage.
-
 We gratefully acknowledge the support of the National Science Foundation through award CMMI-1636302.  Any opinions, findings, and conclusions or recommendations expressed in this material are those of the authors and do not necessarily reflect the views of the National Science Foundation.
 
 
