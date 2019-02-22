@@ -67,22 +67,16 @@ Sciences, University of California, Berkeley, CA 94720 USA e-mail: {\tt\small ro
 \maketitle
 
 \begin{abstract}
-Designing a robotic mechanism to perform some desired dynamic behavior under limited actuation power is a challenge.
-Descriptions of dynamic requirements inherently exist in the time domain while extant mechanism synthesis techniques are predominantly geometric in nature.
-To bridge this gap, we consider the dynamics of a simplified ``mock-up'' model
-%of a motor acting through a spring and mechanism to push an inertia.
-that excludes mechanism dimensions and topology in place of user-defined kinematic characteristics.
-The characteristics that produce the desired dynamic behavior serve as a goal for a to-be-designed mechanism discovered during subsequent kinematic synthesis.
-Following this, the synthesis method employed must be capable of sufficiently matching user-defined nonlinearities.
-Linkages of the six-bar topology provide this capability but are challenged with design equations of very high degree that have not been solved before.
-We solve these equations using the Finite Root Generation technique.
-%Our approach is motivated by an application for small legged robots to increase power density through kinematic design rather than actuator sizing.
-%While not possible for a directly driven mechanism, we show how this is done using series-elastic actuation.
-Our approach is motivated by an application for small legged robots to find a leg mechanism powered by a series elastic actuator capable of recycling a foot path while producing locomotive power within a single stride beyond the actuator's limit.
-%While not possible for a directly driven mechanism, we show how this is done using series-elastic actuation.
-%We design leg mechanisms capable of continuously recycling a foot path while producing locomotive power within a single stride beyond its actuator's limit.
-%Candidate designs are presented that are capable of producing 3.0 times the actuator's power in simulation.
-%Experimental results of one such mechanism demonstrated a decrease from the ideal down to 2.6 times the actuator's power.
+%Designing a robotic mechanism to perform some desired dynamic behavior under limited actuation power is a challenge.
+%Descriptions of dynamic requirements inherently exist in the time domain while extant mechanism synthesis techniques are predominantly geometric in nature.
+%To bridge this gap, we consider the dynamics of a simplified ``mock-up'' model
+%that excludes mechanism dimensions and topology in place of user-defined kinematic characteristics.
+%The characteristics that produce the desired dynamic behavior serve as a goal for a to-be-designed mechanism discovered during subsequent kinematic synthesis.
+%Following this, the synthesis method employed must be capable of sufficiently matching user-defined nonlinearities.
+%Linkages of the six-bar topology provide this capability but are challenged with design equations of very high degree that have not been solved before.
+%We solve these equations using the Finite Root Generation technique.
+%Our approach is motivated by an application for small legged robots to find a leg mechanism powered by a series elastic actuator capable of recycling a foot path while producing locomotive power within a single stride beyond the actuator's limit.
+Computational tools based in homotopy continuation have enabled a new design technique for dynamic machines.  In the past, mechanism design was commonly accomplished by optimization algorithms working under kinematic requirements.  Our work does not build off those foundations, but instead demonstrates the utility of the recently developed Finite Root Generation (FRG) technique by delineating a technique for designing under dynamic requirements.   The key characteristic of FRG compared to other algorithms is its ability to find a nearly complete solution set to mechanism design equations that are prohibitively burdened with numerous roots at infinity.  In turns out, most mechanism topologies that include a floating closed kinematic are prohibitively burdened with infinite roots such that their complete set of solutions have never been found (for brevity, we call these equations unsolved).  An example of unsolved design equations comes from the Stephenson II six-bar, a simple-looking planar linkage.  Its timed curve design equations are solved for the first time here due to the algorithmic advantages of FRG.  This work on planar six-bars is not only immediately useful, as demonstrated by a robotic leg prototype, but provides solid foundations for generalizing into spatial mechanisms with floating closed chains.
 \end{abstract}
 
 
@@ -115,14 +109,26 @@ Mechanism design, computational geometry, dynamics, kinematics
 % 
 % Here we have the typical use of a "T" for an initial drop letter
 % and "HIS" in caps to complete the first word.
-\IEEEPARstart{T}{here} are no simple tools for designing dynamic machines.
+\IEEEPARstart{A}{} new design technique for dynamic machines has been made possible by a recent algorithm in numerical homotopy continuation.  This is not related to past work in kinematic synthesis that finds single solutions through optimization.  Instead we are interested in design exploration, which compiles multiple design candidates over the entirety of the design space.  The enabling feature of our work is to find complete solution sets to design equations which are heavily burdened with infinite roots.  This is related to other techniques that find complete solutions to polynomial systems [cite], of which numerical homotopy continuation solvers indisputably solve the biggest.  Our work is distinguished by solving\footnote{By use of the word ``solve'', we mean to find numerical approximations to all solutions for a single system of equations.  We often deal with solution sets in the millions.  This is different from solving for one or two solutions.} the largest systems to date.  The size of a polynomial system is a complex topic that necessarily requires some measure of degree, of which there are several [cite].  For the design equations of interest, these calculations lead to huge overestimations of the number of finite roots of a system.  From the standpoint of a homotopy solver, the difference between these estimations and the finite root set represents a prohibitively large number of roots at infinity to compute.  With this in mind, the degree of a system best measures its computational barrier to entry and gives very little bearing on the maximum number of design solutions which might be found.  Our contribution is to algorithmically lower this barrier to entry with the Finite Root Generation (FRG) method [cite].  To demonstrate, we solve a set of design equations that has never been solved$^1$ in the past: timed curve generation for a planar six-bar linkage.  It may come as a surprise to some readers that these equations were not solved$^1$ long ago.  It turns out the burden of infinite roots prevented this until now.  It is often the case that mechanism topologies, planar or spatial, which include a floating closed loop suffer from this affliction.  In order to drive towards more complicated spatial designs, we recognize the importance of due diligence in the plane.  Furthermore, we demonstrate the immediate utility of the six-bar topology by designing a dynamic leg mechanism for a robot.
+
+There are no simple tools for designing dynamic machines.
 The leading approaches are based in optimization and intuition.
-We demonstrate a method that excludes the former and lessens dependence on the latter.
-This work is enabled by a new algorithm in numerical homotopy continuation that can find nearly complete solution sets of highly nonlinear systems of equations.
+Our method excludes the former and lessens dependence on the latter.
+Our work is enabled by the FRG algorithm which can find nearly complete solution sets of highly nonlinear systems of equations.
 %
 The connection to design occurs as these systems of equations comprise geometric design constraints, and their variables are design parameters.
 Rather than search through the design space for a set of parameters that satisfy all constraints and minimize some objective, design constraints are posed as systems with isolated roots, where gathering roots is equivalent to compiling candidate design parameters.  The result is a thorough exploration of the design space.
 
+\begin{figure}[!t]
+	\centering
+	\subfloat[]{\includegraphics[scale=0.7]{intro_sixbar_a}%
+		\label{intro_sixbar_a}}
+	\hfil
+	\subfloat[]{\includegraphics[scale=0.6]{intro_sixbar_b}%
+		\label{intro_sixbar_b}}
+	\caption{A six-bar linkage transforms input torque to output force in a highly nonlinear way.}
+	\label{intro_sixbar}
+\end{figure}
 
 Specifically, we care to design machines consisting of rigid links and springs that perform some specified motion when subjected to expected loads.
 We narrow the scope of expected loads by considering only actuator torque (input) and the force acting on an end effector point (output), see Fig. \ref{intro_sixbar}.
@@ -133,16 +139,7 @@ These forms may be grouped with inertial and force elements (masses, motors, spr
 In this way, configuration-dependent mechanical advantage curves that create a desired dynamic response may be found beforehand in order to serve as a design goal for kinematic synthesis.
 
 
-\begin{figure}[!t]
-\centering
-\subfloat[]{\includegraphics[scale=0.7]{intro_sixbar_a}%
-\label{intro_sixbar_a}}
-\hfil
-\subfloat[]{\includegraphics[scale=0.6]{intro_sixbar_b}%
-\label{intro_sixbar_b}}
-\caption{A six-bar linkage transforms input torque to output force in a highly nonlinear way.}
-\label{intro_sixbar}
-\end{figure}
+
 
 
 
