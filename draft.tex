@@ -62,7 +62,7 @@
 \thanks{M.~Plecnik is with the Department of Aerospace and Mechanical Engineering, University of Notre Dame, IN, 46556 USA e-mail: {\tt\small plecnikmark@nd.edu}}% <-this % stops a space
 \thanks{R.~S.~Fearing is with the Department of Electrical Engineering and Computer
 Sciences, University of California, Berkeley, CA 94720 USA e-mail: {\tt\small ronf@eecs.berkeley.edu}}% <-this % stops a space
-\thanks{Manuscript received March 3, 2019; revised Month xx, 2019.}}
+\thanks{Manuscript received March 7, 2019; revised Month xx, 2019.}}
 
 % The paper headers
 \markboth{IEEE Transactions on Robotics,~Vol.~xx, No.~xx, Month~20xx}%
@@ -112,7 +112,7 @@ While optimization methods are frequently used to perform design,
 searching for a global optimum in an intensely nonlinear and high-dimensional design space is difficult, 
 especially if stochastic seeding is involved.  
 In contrast to optimal synthesis, the role of design exploration is to survey a multitude of solutions over the entirety of the design space.
-Rather than using optimization, in this work design requirements are encoded into a square system of equations that manifests the design space's nonlinearities.  
+Rather than using optimization, in this work, design requirements are encoded into a square system of equations that manifests the design space's nonlinearities.  
 Due to these nonlinearities, this system will possess a huge number of isolated roots.  
 Each root contains a description of robot geometry, thus their discovery becomes the action of design.  
 Following this, the computation of all isolated roots constitutes design space exploration.  
@@ -168,67 +168,36 @@ Since all isolated roots of this related system were not obtainable in the past,
 
 This work is unrelated to design methods based in optimization.
 For given robot dimensions, software tools such as rigid body dynamics solvers already exist to analyze dynamic behavior.  Pairing these with black box optimizers forms an update loop between design parameters (robot dimensions) and the resulting behavior.  
-\sout{This approach to design leads to methods just a varied as the underlying optimizers.}
+%This approach to design leads to methods just a varied as the underlying optimizers.
 Once a meaningful objective function is established, global optimums are sought but are challenged by design space nonlinearities.  
-{\color{ForestGreen}
 For example, nonlinearities decreases the likelihood that search strategies based in stochastic seeding will find relevant optimums in the design space.
-}
 
-{\color{ForestGreen}
+
+
 Here we take a different approach.
-}
 Design requirements are translated into a system of equations.
-This system exhibits intense nonlinearities, {\color{ForestGreen} e.g. in this paper the system is of degree $8.8\times 10^{12}$.}
+This system exhibits intense nonlinearities, e.g. in this paper the system is of degree $8.8\times 10^{12}$.
 However, the algorithms of numerical homotopy continuation are well equipped (perhaps the most equipped) to handle these nonlinearities.
-By formulating synthesis systems to be square, its roots become isolated.
+By formulating a synthesis system to be square, its roots become isolated.
 These roots might be imagined as a spread of points across the design space.
 Each of these points indicates a portion of the design space where requirements are met.
 Therefore, the action of obtaining all roots constitutes design space exploration.
 FRG is able to obtain 99.0\% of candidate design points.
-Locating these points through a high dimensional grid search in a nonlinear space is computationally prohibitive.
+In contrast, locating these points through a high dimensional grid search in a nonlinear space would be computationally prohibitive.
 
-{\color{ForestGreen} (moved carriage return)}
-
-\sout{However, in } {\color{ForestGreen} In} practice, synthesis systems are riddled with infinite roots, a type of degenerate root which is physically irrelevant.
+In practice, synthesis systems are riddled with infinite roots, a type of degenerate root which is physically irrelevant.
 This is where current homotopy root-finding algorithms fall short.
-%{\color{ForestGreen} The methods of numerical homotopy continuation are equipped to compute infinite roots, but are overwhelmed by their sheer quantity.}
+%The methods of numerical homotopy continuation are equipped to compute infinite roots, but are overwhelmed by their sheer quantity.
 It is often the case that upwards of 95\% of computations are dedicated to discovering useless roots at infinity.
-\sout{
-A notable contribution toward alleviating the burden of infinite roots was the introduction of regeneration homotopy by Hauenstein et al. \cite{hauensteinRegenerationHomotopiesSolving2011}
-}
-{\color{ForestGreen}
 Hauenstein et al. \cite{hauensteinRegenerationHomotopiesSolving2011} introduced the regeneration homotopy method to reduce the quantity of divergent paths.
-}
 Their method was applied to a system of degree 264,241,152 \cite{plecnikComputationalDesignStephenson2015}.
-\sout{
-In this work, we consider a system of degree $8.8\times 10^{12}$.  
-Through FRG, we find that only 0.000017\% of roots are finite.
-}
-{\color{ForestGreen}
 In contrast, FRG precludes all computations of roots at infinity, making computations possible.
 Here we apply it to a system of degree $8.8\times 10^{12}$ and find that only 0.000017\% of roots are finite.
-}
-The rest are physically useless.
-\sout{
-The contribution of FRG was to eliminate all computations related to infinite roots.
-The motivation was to be able to obtain all isolated solutions to systems with degrees greater than ever before.
-}
-{\color{ForestGreen}
+The rest of the roots are physically meaningless.
 FRG allows the computation of all isolated roots to synthesis systems larger than ever before.
-}
-\sout{
-In this work, we are finding all isolated roots for one such system, and demonstrating new design capabilities offered by that power.
-}
-{\color{ForestGreen}
 In this work, we find all isolated roots for one such system, and demonstrate the new design capabilities FRG offers.
-}
-\sout{
-As the design work conducted in this paper is on a planar six-bar linkage, it may be surprising to some readers that not all isolated roots of all planar linkages were found in the past.
-}
-{\color{ForestGreen}
 The design work conducted in this paper considers a planar six-bar linkage.
 It may be surprising to some readers that not all isolated roots of all planar linkages were found in the past.
-}
 Perhaps even more surprising, the frontier of this knowledge begins as soon as one deviates from the simple four-bar linkage.
 The reason these computations have not taken place in the past is the overwhelming presence of infinite roots in the synthesis equations.  
 These calculations have remained computationally prohibitive even with tremendous growth in computer speeds and parallelization.  
@@ -236,13 +205,8 @@ FRG approaches this challenge from the algorithm level.
 This paper lays the groundwork for generalizations into more complex spatial linkages.  
 In the past, it has been shown how planar modules can lead to complex spatial chains \cite{plecnikControllingMovementTRR2016}.
 
-\sout{
-From the standpoint of new design capabilities, by finding all isolated roots to a six-bar linkage that prescribes a transmission function over the path of its end effector, we are able to perform design exploration for machines that explicitly prescribes torque/force ratios between the actuator and load at different points of the configuration space.
-}
-{\color{ForestGreen}
 From the standpoint of new design capabilities, the finite, isolated roots that we compute are used to perform design exploration for mechanisms that produce a prescribed transmission function from its motor's dynamics onto the path of its end effector.
-This allows us ton explicitly prescribe torque/force ratios between the motor and load at different points in the configuration space.
-}
+This allows us to explicitly prescribe torque/force ratios between the motor and load at different points in the configuration space.
 Control over these force ratios gives us control over dynamic behavior.  
 Performing design exploration over these dynamic machines gives us an unprecedented design tool.
 
@@ -269,7 +233,7 @@ Performing design exploration over these dynamic machines gives us an unpreceden
 	\label{intro_sixbar}
 \end{figure}
 
-Specifically, we care to design machines consisting of rigid links and springs that perform some specified motion when subjected to expected loads.
+Specifically, we desire to design machines consisting of rigid links and springs that perform some specified motion when subjected to expected loads.
 We narrow the scope of expected loads by considering only actuator torque (input) and the force acting on an end effector point (output), see Fig. \ref{intro_sixbar}.
 The time-varying magnitudes of this force and torque define inertial motion, but their ratio (called mechanical advantage) is purely geometric\footnote{Neglecting losses}, connecting kinematic constraints to dynamic behavior.
 
@@ -281,31 +245,17 @@ In this way, configuration-dependent mechanical advantage curves that create a d
 
 
 To find an instantiating geometry for a desired mechanical advantage form requires investigation of a sufficiently complex design space capable of satisfying our customization needs.
-\sout{
-Luckily, we do not need to consider overly complicated mechanism topologies.
-For example, a six-bar linkage, shown in Fig. \ref{intro_sixbar}, is a single degree-of-freedom mechanism.
-}
-{\color{ForestGreen}
+%Luckily, we do not need to consider overly complicated mechanism topologies.
+%For example, a six-bar linkage, shown in Fig. \ref{intro_sixbar}, is a single degree-of-freedom mechanism.
 We consider a planar six-bar linkage, shown in Fig. \ref{intro_sixbar}.
-}
 Despite its simple structure, it is capable of producing complex, constrained motions, e.g. it may draw a degree 16 plane curve \cite{primroseSixbarMotionII1967}.
-On the other hand, this same simple structure begets challenging nonlinearities within \sout{six-bar design} {\color{ForestGreen} its synthesis} equations e.g. \sout{the equations investigated in this work are} {\color{ForestGreen} a system} of degree $8.8 \times 10^{12}$.
-\sout{
-To corral this daunting number, we implement the Finite Root Generation technique \cite{plecnikFindingOnlyFinite2017}, based in numerical homotopy continuation.
-This technique estimated the number of finite roots of this system to be around $1.5 \times 10^6$, and found these roots for a numerically general version of the system.
-}
-{\color{ForestGreen}
+On the other hand, this same simple structure begets challenging nonlinearities within its synthesis equations e.g. a system of degree $8.8 \times 10^{12}$.
 To corral this daunting number, FRG was implemented and found approximately $1.5 \times 10^6$ finite, isolated roots for a numerically general version of the system.
-}
-This set of roots itself is a new design instrument, which can be used repeatedly in conjunction with \sout{another} {\color{ForestGreen} the}  well established {\color{ForestGreen} parameter} continuation technique \cite{morganCoefficientparameterPolynomialContinuation1989} to efficiently \sout{find the} {\color{ForestGreen} compute all} isolated roots of any system of this structure {\color{ForestGreen} in the future}.
+This set of roots itself is a new design instrument, which can be used repeatedly in conjunction with the well established parameter continuation technique \cite{morganCoefficientparameterPolynomialContinuation1989} to efficiently compute all isolated roots of any system of this structure in the future.
 
-{\color{ForestGreen} (new carriage return)}
-
-\sout{
-The equations themselves comprise of the kinematic constraints to coordinate endpoint $P$ with angle $\phi$ of a Stephenson II six-bar linkage, see Fig. \ref{intro_sixbar}.
-The complete set of isolated roots of these equations is first presented in this work.
-This set of roots is particularly useful for synthesizing a point path to coordinate with the mechanical advantage of an input link, albeit indirectly.
-}
+%The equations themselves comprise of the kinematic constraints to coordinate endpoint $P$ with angle $\phi$ of a Stephenson II six-bar linkage, see Fig. \ref{intro_sixbar}.
+%The complete set of isolated roots of these equations is first presented in this work.
+%This set of roots is particularly useful for synthesizing a point path to coordinate with the mechanical advantage of an input link, albeit indirectly.
 We are performing design space exploration by finding nearly all isolated roots, something that was not possible on this scale in the past.
 In particular, we are able to perform design exploration for machines with control over the ratios between input torque and load.  This gives us control over dynamic behavior.
 Since these sets of isolated roots were only recently computable by FRG, we present a design exploration tool for dynamic machines that was not possible in the past.
