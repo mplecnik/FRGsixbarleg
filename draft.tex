@@ -123,7 +123,7 @@ Six-bar motions offer a level of complexity that make this topology particular v
 The type of synthesis enabled here allows the design of a transmission function from motor dynamics to a loaded end effector to influence overall dynamic behavior.
 Design exploration is demonstrated for a robotic leg prototype.
 We extracted from 1,528,608 million isolated roots 941 physically relevant cognate foursomes that expand into 3764 mechanism designs before defects.
-This work in the plane provides solid foundations for generalizations into spatial mechanisms. 
+This work in the plane provides solid foundations for generalizations into spatial mechanisms.
 \end{abstract}
 
 
@@ -173,7 +173,6 @@ Once a meaningful objective function is established, global optimums are sought 
 For example, nonlinearities decreases the likelihood that search strategies based in stochastic seeding will find relevant optimums in the design space.
 
 
-
 Here we take a different approach.
 Design requirements are translated into a system of equations.
 This system exhibits intense nonlinearities, e.g. in this paper the system is of degree $8.8\times 10^{12}$.
@@ -204,6 +203,7 @@ These calculations have remained computationally prohibitive even with tremendou
 FRG approaches this challenge from the algorithm level.
 This paper lays the groundwork for generalizations into more complex spatial linkages.  
 In the past, it has been shown how planar modules can lead to complex spatial chains \cite{plecnikControllingMovementTRR2016}.
+
 
 From the standpoint of new design capabilities, the finite, isolated roots that we compute are used to perform design exploration for mechanisms that produce a prescribed transmission function from its motor's dynamics onto the path of its end effector.
 This allows us to explicitly prescribe torque/force ratios between the motor and load at different points in the configuration space.
@@ -252,6 +252,12 @@ Despite its simple structure, it is capable of producing complex, constrained mo
 On the other hand, this same simple structure begets challenging nonlinearities within its synthesis equations e.g. a system of degree $8.8 \times 10^{12}$.
 To corral this daunting number, FRG was implemented and found approximately $1.5 \times 10^6$ finite, isolated roots for a numerically general version of the system.
 This set of roots itself is a new design instrument, which can be used repeatedly in conjunction with the well established parameter continuation technique \cite{morganCoefficientparameterPolynomialContinuation1989} to efficiently compute all isolated roots of any system of this structure in the future.
+
+{\color{ForestGreen}
+Our treatment of design involves dealing with algebraic equations rather than geometric constructions.
+This makes our method technically simple for designers without prior knowledge of mechanism parameters, removing the need for geometric creativity.
+Furthermore, by generating multiple design options, a designer is better equipped to account for secondary requirements, such as sensitivity to fabrication errors.
+}
 
 %The equations themselves comprise of the kinematic constraints to coordinate endpoint $P$ with angle $\phi$ of a Stephenson II six-bar linkage, see Fig. \ref{intro_sixbar}.
 %The complete set of isolated roots of these equations is first presented in this work.
