@@ -8,6 +8,7 @@
 \usepackage{multirow}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{ulem}
+\usepackage{array}
 
 
 \ifCLASSOPTIONcompsoc
@@ -16,6 +17,7 @@
   \usepackage[caption=false,font=footnotesize]{subfig}
 \fi
 
+\newcommand{\centered}[1]{\begin{tabular}{l} #1 \end{tabular}}
 
 \def\*#1{\bar{#1}} % an abbreviation of \bar{}
 
@@ -62,7 +64,7 @@
 \thanks{M.~Plecnik is with the Department of Aerospace and Mechanical Engineering, University of Notre Dame, IN, 46556 USA e-mail: {\tt\small plecnikmark@nd.edu}}% <-this % stops a space
 \thanks{R.~S.~Fearing is with the Department of Electrical Engineering and Computer
 Sciences, University of California, Berkeley, CA 94720 USA e-mail: {\tt\small ronf@eecs.berkeley.edu}}% <-this % stops a space
-\thanks{Manuscript received March 7, 2019; revised Month xx, 2019.}}
+\thanks{Manuscript received March 14, 2019; revised Month xx, 2019.}}
 
 % The paper headers
 \markboth{IEEE Transactions on Robotics,~Vol.~xx, No.~xx, Month~20xx}%
@@ -398,22 +400,23 @@ By retracing edges and keeping track of the correspondence of roots at each vert
 
 
 
-In this work, we create a design procedure for instantiating dynamic behavior into a machine by applying FRG to obtain the all isolated roots of a system that was previously computationally prohibitive.
+In this work, we create a design procedure for instantiating dynamic behavior into a machine by applying FRG to obtain all isolated roots of a system that was previously computationally prohibitive.
 The process begins by posing a simplified system, referred to as a dynamic mock-up, that captures the desired dynamics, presented in Section \ref{sec:dynamic_mock-up}.
 The mock-up indicates geometric constraints which are encoded into relevant synthesis equations, presented in Section \ref{sec:synth_eq}.
 The FRG method was applied to obtain all isolated roots of these equations, presented in Section \ref{sec:frg}.
 These roots serve as an design instrument to efficiently obtain all roots of the synthesis equations for different geometric requirements.
 We demonstrate this in Section \ref{sec:leg_app} by applying the results of FRG to the design of a leg mechanism that modulates power beyond its motors output during a fully rotatable running motion.
+The sensitivity of design candidates to dimensional errors is analyzed in Section \ref{sec:sensitivity} and conclusions are offered in Section \ref{sec:conclusion}.
 
 
 
 
 
 
-\begin{figure}[!b]
+\begin{figure}[b]
 \centering
 \includegraphics[width=1\linewidth]{dynamic_model}
-\caption{A mock-up dynamic system used to inform desirable kinematic properties of a to-be-designed linkage.  The fixed motor is connected in series with a spring to an input crank.  Without any linkage existing yet, a user defined angle-arclength relationship describes how torques at the crank transform to forces at the masses.}
+\caption{A mock-up dynamic system used to inform desirable kinematic properties of a to-be-designed linkage.  The fixed motor is connected in series with a spring to an input crank.  Without any linkage existing yet, a user defined angle-arc length relationship describes how torques at the crank transform to forces at the masses.}
 \label{dynamic_model}
 \end{figure}
 
@@ -427,7 +430,19 @@ This torque is transformed by the mechanical advantage of a to-be-designed linka
 The direction of $F_t$ lies tangent to a point path $\mathcal{C}$ constrained by the to-be-designed linkage.
 
 
-
+\begin{figure}[!b]
+\centering
+\subfloat[]{\includegraphics[scale=0.3]{clickspec_path}%
+\label{clickspec_path}}
+\hfil
+\subfloat[]{\includegraphics[scale=0.3]{clickspec_ma}%
+\label{clickspec_ma}}
+\hfil
+\subfloat[]{\includegraphics[scale=0.3]{clickspec_angle}%
+\label{clickspec_angle}}
+\caption{Mechanism properties were specified by clicking the red points on a computer screen and interpolating.  Specified properties are the \protect\subref{clickspec_path} the point trace path and \protect\subref{clickspec_ma} mechanical advantage coordinated with path arc length.  In \protect\subref{clickspec_angle}, the angle-arc length relationship is derived from integrating \protect\subref{clickspec_ma}.}
+\label{clickspec}
+\end{figure}
 
 
 \subsection{Specifying Mechanism Characteristics}
@@ -438,19 +453,7 @@ In particular, we specify its constrained point path and variable mechanical adv
 We accomplish this by clicking points on a computer screen, and interpolating curves through these points.
 We choose the Fourier-based interpolation method used in \cite{plecnikControllingMovementTRR2016} to create periodic curves that are smooth everywhere.
 
-\begin{figure}[!t]
-\centering
-\subfloat[]{\includegraphics[scale=0.3]{clickspec_path}%
-\label{clickspec_path}}
-\hfil
-\subfloat[]{\includegraphics[scale=0.3]{clickspec_ma}%
-\label{clickspec_ma}}
-\hfil
-\subfloat[]{\includegraphics[scale=0.3]{clickspec_angle}%
-\label{clickspec_angle}}
-\caption{Mechanism properties were specified by clicking the red points on a computer screen and interpolating.  Specified properties are the \protect\subref{clickspec_path} the point trace path and \protect\subref{clickspec_ma} mechanical advantage coordinated with path arclength.  In \protect\subref{clickspec_angle}, the angle-arclength relationship is derived from integrating \protect\subref{clickspec_ma}.}
-\label{clickspec}
-\end{figure}
+
 
 For example, the red points shown in Fig. \ref{clickspec_path} were entered manually with a computer mouse.  The interpolated curve is parameterized by the Fourier series,
 %\begin{equation}
@@ -472,17 +475,17 @@ The values of Fourier coefficients for the example problem are displayed in Appe
 Order $o$ may be freely specified.
 
 
-Next we replace parameter $\tau$ with arclength $s$.
-To do this, we integrate along $\mathcal{C}$ to densely sample points $(s, \tau)$, then interpolate through them with a cubic Hermite spline creating a monotonic function for $\tau$ of $s$.  Substituting this function into Eqn. (\ref{fourier_interp_path}) yields a numerical arclength parameterization of $\mathcal{C}$,
+Next we replace parameter $\tau$ with arc length $s$.
+To do this, we integrate along $\mathcal{C}$ to densely sample points $(s, \tau)$, then interpolate through them with a cubic Hermite spline creating a monotonic function for $\tau$ of $s$.  Substituting this function into Eqn. (\ref{fourier_interp_path}) yields a numerical arc length parameterization of $\mathcal{C}$,
 \begin{align}
 x(s) = \tilde{x}(\tau(s)), \nonumber\\
 y(s) = \tilde{y}(\tau(s)).
 \label{fourier_interp_path_arc}
 \end{align}
-Eqn. (\ref{fourier_interp_path_arc}) is valid for $s=[0,s_\text{total}]$, the arclength of the entire closed curve.
+Eqn. (\ref{fourier_interp_path_arc}) is valid for $s=[0,s_\text{total}]$, the arc length of the entire closed curve.
 
 We follow a similar process for specifying mechanical advantage with a few modifications.
-First, mechanical advantage $\gamma$ is defined as a function of normalized arclength $\hat{s}$ so that points are entered manually with a mouse in the $\hat{s}$-$\gamma$ plane shown in Fig. \ref{clickspec_ma}.
+First, mechanical advantage $\gamma$ is defined as a function of normalized arc length $\hat{s}$ so that points are entered manually with a mouse in the $\hat{s}$-$\gamma$ plane shown in Fig. \ref{clickspec_ma}.
 Second, the endpoints at $\hat{s}\!=\!0$ and $\hat{s}\!=\!1$ are always specified and share the same $\gamma$ value.
 And third, after interpolation the resulting Fourier series $\gamma(\hat{s})$ must be vertically shifted.
 For a fully rotatable input crank, the area under $\gamma(\hat{s})$ must be $2\pi$.
@@ -496,13 +499,13 @@ For a full traversal of $\mathcal{C}$, the crank must rotate $2\pi$, or rather
 \end{equation}
 The Fourier coefficients of $\gamma(\hat{s})$ are given in Appendix \ref{app:fourier_coefficients} as values $(\alpha_k, \beta_k)$.
 
-Next, function $\gamma(\hat{s})$ is rewritten to accept a non-normalized arclength $s$ argument,
+Next, function $\gamma(\hat{s})$ is rewritten to accept a non-normalized arc length $s$ argument,
 \begin{equation}
 \gamma(s) := \frac{\gamma(s/s_\text{total})}{s_\text{total}}
 \label{gamma_of_s}
 \end{equation}
 Note we take a notational liberty in Eqn. (\ref{gamma_of_s}) by redefining function $\gamma$ in terms of itself instead of making up new notation.
-Integration of $\gamma(s)$ yields an angle-arclength relationship which creates the specified mechanical advantage,
+Integration of $\gamma(s)$ yields an angle-arc length relationship which creates the specified mechanical advantage,
 \begin{equation}
 \phi(s) = \int_{0}^{s_\text{total}} \gamma(s)ds + \text{constant}.
 \end{equation}
@@ -512,6 +515,13 @@ For our example, this curve is plotted in Fig. \ref{clickspec_angle}.  For conve
 \label{sec:eq_of_mot}
 
 After specifying the characteristics of a to-be-designed linkage, Fig. \ref{clickspec}, the mock-up system illustrated in Fig. \ref{dynamic_model} may be simulated.
+
+\begin{figure}[t]
+\centering
+\includegraphics[scale=0.65]{dynamic_model_detail}
+\caption{A detail of force notation at the interaction of $m$ and $M$.  Corresponds to Fig. \ref{dynamic_model}.}
+\label{dynamic_model_detail}
+\end{figure}
 
 The motor dynamics obey a linear torque-speed law,
 \begin{equation}
@@ -526,18 +536,44 @@ T = -k_\text{spring}(\phi - \theta_\text{m}) - c_\text{damp}(\dot{\phi} - \dot{\
 \end{equation}
 where $k_\text{spring}$ is stiffness and $c_\text{damp}$ is damping.
 
+
+
 The mechanical advantage transformation from torque to output force is
 \begin{equation}
 F_t = T \gamma(s),
 \end{equation}
 where $F_t$ is the force acting on mass $m$ tangent to curve $\mathcal{C}$, and $\gamma(s)$ follows Eqn (\ref{gamma_of_s}).
 
-\begin{figure}[!t]
+
+\begin{figure}[b]
 \centering
-\includegraphics[scale=0.65]{dynamic_model_detail}
-\caption{A detail of force notation at the interaction of $m$ and $M$.  Corresponds to Fig. \ref{dynamic_model}.}
-\label{dynamic_model_detail}
+\includegraphics[scale=0.55]{simulation_results}
+\caption{Simulation results of the model shown in Fig. \ref{dynamic_model} for the mechanism properties shown in Fig. \ref{clickspec}.  The mechanical power output associated with the mass surpasses the motor's limit.}
+\label{simulation_results}
 \end{figure}
+
+\begin{table}[!b]
+\caption{Values of simulation parameters}
+\label{simulation_parameters}
+\centering
+\begin{tabular}{|m{6mm}|r@{ }l|m{48mm}|}
+\hline
+\textbf{Para-meter} & \multicolumn{2}{c|}{\textbf{Value}} & \textbf{Comment} \\
+\hline
+$T_\text{stall}$ & 0.33 & Nm & \multirow{2}[4]{*}{Pololu 298:1 Micro Metal Gearmotor} \\
+\cline{1-3}$\omega_\text{free}$ & 11.5 & rad/s &  \\
+\hline
+$k_\text{spring}$ & 0.14 & Nm/rad & 14 mm cylindrical cut of latex \\
+\hline
+$c_\text{damp}$ & 0.0005 & Nm/(rad/s) & Estimated \\
+\hline
+$m$ & 0.02 & kg & Stand-in for to-be-designed linkage inertia \\
+\hline
+$M$ & 0.23 & kg & Typical mass of small robot \\
+\hline
+\end{tabular}
+\end{table}
+
 
 And finally, the forces acting on masses $m$ and $M$ follow the diagrams drawn in Fig. \ref{dynamic_model_detail}.
 That is,
@@ -562,21 +598,11 @@ $F_n$ is the constraint force normal to $\mathcal{C}$, $F_b$ is the reaction for
 Eqns. (\ref{torque-speed})--(\ref{tangency_angle}) in conjunction with $x(s)$, $y(s)$, $\gamma(s)$, and $\phi(s)$ specified in Section \ref{sec:spec_mech_char} form the equations of motion.  To solve these equations, they were rewritten into the form of an initial value problem for use with standard ODE solvers.
 
 
-
 \subsection{Mock-Up Example}
 \label{sec:mock_exam}
 
 The mechanism characteristics shown in Fig. \ref{clickspec} were specified to create a recycling foot path with a fully rotatable crank that modulates the kinetic power of $M$ beyond the motor's limit along the bottom portion of $\mathcal{C}$.
 These specifications were informed by intuition, past experience, and bio-inspiration \cite{haldaneRoboticVerticalJumping2016}.
-
-
-\begin{figure}[!t]
-\centering
-\includegraphics[scale=0.55]{simulation_results}
-\caption{Simulation results of the model shown in Fig. \ref{dynamic_model} for the mechanism properties shown in Fig. \ref{clickspec}.  The mechanical power output associated with the mass surpasses the motor's limit.}
-\label{simulation_results}
-\end{figure}
-
 
 
 
@@ -587,27 +613,6 @@ Simulation shows that modulation of motor power by a factor of 3.0 is possible.
 A leg designed with these mechanical characteristics might deliver 95 mJ of kinetic energy in one stance phase.
 
 
-\begin{table}[h]
-\caption{Values of simulation parametes}
-\label{simulation_parameters}
-\centering
-\begin{tabular}{|m{6mm}|r@{ }l|m{48mm}|}
-\hline
-\textbf{Para-meter} & \multicolumn{2}{c|}{\textbf{Value}} & \textbf{Comment} \\
-\hline
-$T_\text{stall}$ & 0.33 & Nm & \multirow{2}[4]{*}{Pololu 298:1 Micro Metal Gearmotor} \\
-\cline{1-3}$\omega_\text{free}$ & 11.5 & rad/s &  \\
-\hline
-$k_\text{spring}$ & 0.14 & Nm/rad & 14 mm cylindrical cut of latex \\
-\hline
-$c_\text{damp}$ & 0.0005 & Nm/(rad/s) & Estimated \\
-\hline
-$m$ & 0.02 & kg & Stand-in for to-be-designed linkage inertia \\
-\hline
-$M$ & 0.23 & kg & Typical mass of small robot \\
-\hline
-\end{tabular}
-\end{table}
 
 \section{Synthesis Equations}
 \label{sec:synth_eq}
@@ -617,6 +622,7 @@ In particular, we desire a physical instantiation of $x(s)$, $y(s)$, and $\phi(s
 The latter of the three is desired more so for its derivative, $\gamma(s)$, rather than its direct curve, but we employ it directly as a design goal nonetheless.
 The design problem of finding a linkage that creates a desired endpoint path is called \textit{path generation}.
 When this path is additionally coordinated with the angle of an input crank, this problem is sometimes called \textit{timed curve generation} \cite{dijksmanMotionGeometryMechanisms1976}.
+
 
 
 In this section, formulate synthesis equations for a Stephenson II six-bar and compute all of its isolated roots.  The choice to investigate six-bars is not arbitrary.  These linkages are capable of single degree-of-freedom motions which are much more complex than four-bars, the next simplest single degree-of-freedom linkage.  However, the choice to particularly investigate the Stephenson II type of six-bar is partially arbitrary.  There are other types worth investigation too which are not considered in this work.  Before this paper, complete sets of isolated roots for any type of six-bar timed path generator have not been computed.
@@ -1009,7 +1015,7 @@ Path tracking was performed using a predictor-corrector technique based on Runge
 This technique is presented in Appendix \ref{app:tracking}.
 
 
-\begin{figure}[!b]
+\begin{figure}[t]
 \centering
 \includegraphics[scale=0.6]{frg_results}
 \caption{The accumulation of roots over the procession of the FRG algorithgm.  An estimated 99.0\% of roots were found in $3.56 \times 10^6$ trials.  To find 99.9\% would take about 50\% more computational effort.}
@@ -1097,15 +1103,54 @@ Missing cognates were most likely lost during numerical work, but are readily pr
 Expanding out all 941 cognate foursomes obtains 3764 linkage designs.
 
 
-\begin{figure}[!t]
+
+
+\begin{figure}[t]
 \centering
 \includegraphics[scale=0.4]{synth_results_first}
 \hfil
 \vspace{5mm}
 \includegraphics[scale=0.4]{synth_results_second}
-\caption{Linkage designs that exhibit the desired dynamic behavior.  Linkages (a) and (b) are cognates that trace the exact same path with the same coordination of mechanical advantage over arclength.  The same goes for (c) and (d).}
+\caption{Linkage designs that exhibit the desired dynamic behavior.  Linkages (a) and (b) are cognates that trace the exact same path with the same coordination of mechanical advantage over arc length.  The same goes for (c) and (d).}
 \label{synth_results}
 \end{figure}
+
+
+\begin{table}[t]
+\caption{Design variables corresponding to mechanisms $\mathrm{(a)}$, $\mathrm{(b)}$, $\mathrm{(c)}$, $\mathrm{(d)}$, shown in Fig. \ref{synth_results}.  Complex numbers indicate x-y pivot locations in home configurations.  Dimensions are cm.}
+\label{linkage_solution_numbers}
+\centering
+\scalebox{1}{%
+\begin{tabular}{|r@{ }r@{}l|r@{ }r@{}l|}
+\hline
+\multicolumn{3}{|c|}{(a)}  & \multicolumn{3}{c|}{(b)} \\
+\hline
+$A=$ & 4.02063935 & $+$3.79240210$i$ & $A=$ & $-$2.35985445 & $+$7.68751126$i$ \\
+$B=$ & 7.89860362 & $+$4.97580510$i$ & $B=$ & 7.89860362 & $+$4.97580510$i$ \\
+$C=$ & 3.73248379 & $+$3.06554709$i$ & $C=$ & $-$4.00265968 & $+$6.46756247$i$ \\
+$D=$ & 5.50640571 & $+$6.68329005$i$ & $D=$ & 4.92974721 & $+$12.07139758$i$ \\
+$F=$ & 5.82450935 & $+$5.21859158$i$ & $F=$ & 5.82450935 & $+$5.21859158$i$ \\
+$G=$ & 3.86373172 & $+$7.93708335$i$ & $G=$ & $-$2.07604818 & $+$1.41429440$i$ \\
+$H=$ & 2.54366227 & $+$5.50642013$i$ & $H=$ & $-$9.13830033 & $+$7.81064704$i$ \\
+$P_0=$ & 0.09504886 & $+$0.06372449$i$ & $P_0=$ & 0.09504886 & $+$0.06372449$i$ \\
+\hline
+\multicolumn{3}{|c|}{(c)}  & \multicolumn{3}{c|}{(d)} \\
+\hline
+$A=$ & 2.57830162 & $+$7.47750629$i$ & $A=$ & 0.20753471 & $+$6.95450040$i$ \\
+$B=$ & 7.47421398 & $+$4.87297294$i$ & $B=$ & 7.47421398 & $+$4.87297294$i$ \\
+$C=$ & 1.49446501 & $+$7.03351060$i$ & $C=$ & $-$1.11124475 & $+$6.05474088$i$ \\
+$D=$ & 4.61659816 & $+$3.34161892$i$ & $D=$ & 4.09961571 & $+$2.01979554$i$ \\
+$F=$ & 5.59922115 & $+$4.64881064$i$ & $F=$ & 5.59922115 & $+$4.64881064$i$ \\
+$G=$ & 2.83013468 & $+$4.64176203$i$ & $G=$ & 1.63963702 & $+$4.82891573$i$ \\
+$H=$ & 1.70261615 & $+$6.31480581$i$ & $H=$ & $-$1.94332603 & $+$6.79984649$i$ \\
+$P_0=$ & 0.09504886 & $+$0.06372449$i$ & $P_0=$ & 0.09504886 & $+$0.06372449$i$ \\
+\hline
+\end{tabular}}
+\end{table}
+
+
+
+
 
 
 These linkage designs are susceptible to a known list of linkage defects: circuit, branch, order, and full rotatability defects \cite{balliDefectsLinkMechanisms2002}.
@@ -1114,8 +1159,8 @@ Occasionally designs were found to possess circuit defects but were still deemed
 That is, if a mechanism circuit missed one or two task points but still approximated the motion that $\mathbf{q}_\text{task}$ was chosen to approximate in the first place, that mechanism was considered useful.
 In addition, linkages must have pivots in acceptable locations (e.g. not underground) and ideally be compact.
 A few linkage designs which satisfy these criteria are drawn in Fig. \ref{synth_results}.
-The linkages shown in Figs. \ref{synth_results}a and \ref{synth_results}b are cognates.  Likewise with \ref{synth_results}c and \ref{synth_results}d.
-That being the case, they produce the same point path with the same variation of mechanical advantage across that path.
+The linkages shown in Figs. \ref{synth_results}(a) and \ref{synth_results}(b) are cognates.  Likewise with \ref{synth_results}(c) and \ref{synth_results}(d).
+That being the case, they produce the same point path with the same coordination of mechanical advantage across that path.
 Therefore, the plots printed under each pair in Fig. \ref{synth_results} describe both linkages above.
 
 
@@ -1129,14 +1174,117 @@ And third, the foot goes out of contact and recycles back to its starting positi
 Although only a single low mechanical advantage region was desired, a second is seen in the unloaded regions of Fig. \ref{synth_results}.
 It was common to nearly all designs that had the foot path entirely below the ground pivots, that installing a low mechanical advantage region on one part of the curve begot another low mechanical advantage region elsewhere.
 It is unclear whether it is possible to exclude this second region and maintain pivots above the foot path.
-This just might be the circumstance of the design space we are navigating.
-As the second low spot appears in the unloaded region, it is not problematic.
+This characteristic might be intrinsic of the design space.
+Since the second low spot appears in the unloaded region, it is not problematic.
+
+
+\section{Sensitivity Analysis}
+\label{sec:sensitivity}
+
+A feature of the proposed approach is to survey the design space and produce multiple options.
+There are many criteria by which designs can be evaluated.
+Foremost, we consider dynamic behavior.
+Another important consideration is a design's sensitivity to fabrication errors.
+Since our design specifications involve instantiating a configuration space with near singular conditions, there is a good chance the resulting designs will be sensitive to dimensional errors.
+An analysis was conducted to compare the four designs shown in Fig. \ref{synth_results}.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=1\linewidth]{PointByPointDeviation}
+\caption{The variation in mechanical advantage due to deviations in individual pivot locations for mechanisms shown in Fig. \ref{synth_results}.  Columns correspond to mechanisms (a), (b), (c), and (d).  Rows correspond to pivots $A$, $B$, $C$, $D$, $F$, $G$, and $H$.  Deviations simulate fabrication errors from the pivots' ideal locations.  Deviations were parameterized with polar coordinates.  Polar radii are indicated by line color, and polar angles are varied on the horizontal axes.  Note that if the absolute value of mechanical advantage is zero, this indicates that the deviation resulted in a branch defective linkage.  Column (a) and column (b) respectively indicate designs sensitive and insensitive to position errors.  Deviation of pivot $A$ had little effect on the resulting mechanical advantage.  Deviation of pivot $F$ had a large effect.}
+\label{PointByPointDeviation}
+\end{figure}
+
+
+
+
+
+
+
+
+To simulate fabrication errors, pivots were perturbed from their ideal positions and changes in kinematical behavior were observed.
+The seven planar pivots $\{A$, $B$, $C$, $D$, $F$, $G$, $H\}$ make up a 14-dimensional input space to introduce perturbations within.
+Here we consider only a single kinematical output: the minimum absolute value of mechanical advantage in the energization region.  
+For brevity, we will refer to this as the \textit{low MA value}.
+This minimum is important because it dictates the maximum amplification of ground forces through the mechanism into a reaction torque acting on the motor.
+Consequently, it effects how near the motor gets to producing its stall torque and how much energy might be transiently stored in the spring for a high powered motion.
+
+
+\begin{figure}[t]
+	{\centering
+	\subfloat[]{\includegraphics[scale=0.5]{deviatedMAcurves894}}%
+		\label{deviatedMAcurves894}}
+	\hfil
+	\includegraphics[scale=0.4]{deviatedMAcurvesLegend}\\
+	{\centering
+	\subfloat[]{\includegraphics[scale=0.5]{deviatedMAcurves896}}%
+		\label{deviatedMAcurves896}}
+	\caption{Mechanical advantage profiles for mechanisms randomly deviated from the true pivot locations of mechanisms (a) and (b) shown in Fig.~\ref{synth_results}.  Random noise in pivot positions simulates fabrication errors.  Pivot locations were varied according to normal distributions centered at their true location with a standard deviation of 1 mm.  A quantity of 1000 samples were generated for each plot.  Sample mechanisms that possess a zero mechanical advantage configuration are branch defective.  Statistics corresponding to these plots are given in Table \ref{variation_statistics}.}
+	\label{deviatedMAcurves}
+\end{figure}
+
+\begin{table}[t]
+\caption{The effect of random deviations of pivots from their true positions for mechanisms $\mathrm{(a)}$, $\mathrm{(b)}$, $\mathrm{(c)}$, $\mathrm{(d)}$ shown in Fig.~\ref{synth_results}.  Statistics correspond to the data plotted in Fig. \ref{deviatedMAcurves}.}
+\label{variation_statistics}
+\centering
+\begin{tabular}{|m{35mm}|c|c|c|c|}
+\cline{2-5}\multicolumn{1}{l|}{} & (a) & (b) & (c) & (d) \\
+\hline
+Probability of branch defect & 59.1\% & 22.8\% & 64.8\% & 48.6\% \\
+\hline
+\multirow{5}[2]{3.5cm}{Average of the minimum absolute value of mechanical advantage in the energization region$^*$ (N/Nm)} &  &  &  &  \\
+  &  &  &  &  \\
+  & 13.3 & 5.2 & 6.5 & 4.7 \\
+  &  &  &  &  \\
+  &  &  &  &  \\
+\hline
+\multirow{3}[2]{3.5cm}{Standard deviation of the above statistic (N/Nm)} &  &  &  &  \\
+  & 9.4 & 2.1 & 3.8 & 3.1 \\
+  &   &   &   &  \\
+\hline
+\multicolumn{5}{l}{$^*$Excluding branch defective linkages} \rule{0pt}{3ex}
+\end{tabular}
+\end{table}
+
+
+To understand the effect that errors in pivot positions has on the low MA value, we shifted pivot positions off from their ideal values, given in Table \ref{linkage_solution_numbers}.
+Deviations were introduced to each pivot individually, and were parameterized by polar coordinates.
+Offset radii of 0.05 cm, 0.10 cm, 0.15 cm, and 0.20 cm were swept from 0 to 2$\pi$.
+For each offset, the resulting deviated linkage was analyzed and its low MA value was computed.
+Deviation results for the four linkages shown in Fig. \ref{synth_results} are shown in Fig. \ref{PointByPointDeviation}.
+At times, the low MA value computed to zero.
+This indicates that a deviated linkage encountered a singular configuration and is thus branch defective.
+For our application, these dimensional errors would be problematic.
+In application, they would bring the motor to stall as the linkage jams.
+On the other hand, if the low MA value is too high, power modulation will not occur.
+Referring to Fig. \ref{PointByPointDeviation}, our analysis indicates mechanism (a) to be the most sensitive to dimensional errors, and mechanism (b) to be the least sensitive.
+Across all designs, pivot $F$ was the most sensitive to dimensional errors, and pivot $A$ was the least sensitive.
+
+
+Since pivot locations were varied one by one, the above analysis does not account for the combined variation of errors in multiple pivots simultaneously.
+A second study was performed to analyze this combined effect.
+Normal distributions were defined inside circles centered at each pivot.
+In polar coordinates, deviation radii were selected with a standard deviation of 0.1 cm from the pivots' true location and deviation angles were selected with equal probability.
+The low MA value was computed for 1000 deviated linkages generated by these distributions for each of the four linkage designs of Fig. \ref{synth_results}.
+The mechanical advantage profiles for mechanism (a) and (b) deviations are displayed in Fig. \ref{deviatedMAcurves}.
+This figure identifies branch defective curves (which pass through zero) and defect free curves alongside the ideal form.
+The low MA value of the ideal linkage is indicated with a star.
+Statistics corresponding to Fig. \ref{deviatedMAcurves} are shown in Table \ref{variation_statistics}.
+They indicate a 22.8\% for random dimensional errors of mechanism (b) to result in a branch defect.  On the other hand, design (a) is higher with 59.1\%.
+Following this, design (b) also has the smallest variability in low MA values when introducing dimensional noise.
+
+
+The sensitivity analyses performed above can be worrisome, i.e. there is an over 50\% chance that a fabricated design solution will be branch defective.
+In practice, designs should be fabricated with a precision adjustment to compensate for their sensitivity.
+A single dimensional deviation can often be identified to calibrate the linkage.
+For example, traversing a set of curves drawn in Fig. \ref{PointByPointDeviation} might be accomplished by implementation of a fine thread screw to move a pivot.
+Adjustment can lead a design from branch defective to low and high MA values.
 
 
 \begin{figure}[!t]
 \centering
 \includegraphics[scale=0.3]{prototype_overlay}
-\caption{Construction of the linkage drawn in Fig. \ref{synth_results}a.}
+\caption{Construction of the linkage drawn in Fig. \ref{synth_results}(a).}
 \label{prototype_overlay}
 \end{figure}
 
@@ -1150,7 +1298,7 @@ As the second low spot appears in the unloaded region, it is not problematic.
 \hfil
 \subfloat[]{\includegraphics[scale=0.12]{prototype_rolling}%
 \label{prototype_rolling}}
-\caption{The constructed linkage was connected to a series-elastic actuator (specs in Table \ref{simulation_parameters}).  An experiment similar to the mock-up dynamic model of Fig. \ref{dynamic_model} was carried out.}
+\caption{The constructed linkage was connected to a series-elastic actuator (specifications in Table \ref{simulation_parameters}).  An experiment similar to the mock-up dynamic model of Fig. \ref{dynamic_model} was carried out.}
 \label{prototype_experiment}
 \end{figure}
 
@@ -1162,7 +1310,7 @@ As the second low spot appears in the unloaded region, it is not problematic.
 
 
 
-To validate design results, the solution drawn in Fig. \ref{synth_results}a was built and tested, pictured in Fig. \ref{prototype_overlay}.
+To validate design results, the solution drawn in Fig. \ref{synth_results}(a) was built and tested, pictured in Fig. \ref{prototype_overlay}.
 More extensive test results are presented in \cite{plecnikAdjustablePowerModulation2019}.
 The prototype consists of a 1 W Pololu motor that twists a torsion spring (cylindrical cut of latex) which rotates the input crank of a 3D printed linkage mounted to a wooden board.
 An experiment was set up similar to the dynamics illustrated in Fig. \ref{dynamic_model} where the leg mechanism pushes a weight, see Fig. \ref{prototype_experiment}.
@@ -1491,7 +1639,7 @@ Repackaging $\mathbf{Z}$ and $t$ into a single vector $\mathbf{Y} = \{ \mathbf{Z
 \mathbf{u}\cdot\mathbf{Y} -1
 \end{Bmatrix}= 0 \label{homotopy_projected}
 \end{equation}
-$\mathbf{Y}$ may be considered a function of the homotopy path's arclength $s$. Taking the derivative of $\mathbf{H}$ with respect to $s$ obtains
+$\mathbf{Y}$ may be considered a function of the homotopy path's arc length $s$. Taking the derivative of $\mathbf{H}$ with respect to $s$ obtains
 \begin{equation}
 \left[ \frac{\partial \mathbf{H}}{\partial \mathbf{Y}} \right] \frac{d\mathbf{Y}}{ds} = 0. \label{homotopy_derivative}
 \end{equation}
