@@ -125,7 +125,7 @@ Six-bar motions offer a level of complexity that make this topology particular v
 The type of synthesis enabled here allows the design of a transmission function from motor dynamics to a loaded end effector to influence overall dynamic behavior.
 Design exploration is demonstrated for a robotic leg prototype.
 We extracted from 1,528,608 million isolated roots 941 physically relevant cognate foursomes that expand into 3764 mechanism designs before defects.
-This work in the plane provides solid foundations for generalizations into spatial mechanisms.
+%This work in the plane provides solid foundations for generalizations into spatial mechanisms.
 \end{abstract}
 
 
@@ -255,11 +255,11 @@ On the other hand, this same simple structure begets challenging nonlinearities 
 To corral this daunting number, FRG was implemented and found approximately $1.5 \times 10^6$ finite, isolated roots for a numerically general version of the system.
 This set of roots itself is a new design instrument, which can be used repeatedly in conjunction with the well established parameter continuation technique \cite{morganCoefficientparameterPolynomialContinuation1989} to efficiently compute all isolated roots of any system of this structure in the future.
 
-{\color{ForestGreen}
+
 Our treatment of design involves dealing with algebraic equations rather than geometric constructions.
 This makes our method technically simple for designers without prior knowledge of mechanism parameters, removing the need for geometric creativity.
 Furthermore, by generating multiple design options, a designer is better equipped to account for secondary requirements, such as sensitivity to fabrication errors.
-}
+
 
 %The equations themselves comprise of the kinematic constraints to coordinate endpoint $P$ with angle $\phi$ of a Stephenson II six-bar linkage, see Fig. \ref{intro_sixbar}.
 %The complete set of isolated roots of these equations is first presented in this work.
@@ -1111,7 +1111,7 @@ Expanding out all 941 cognate foursomes obtains 3764 linkage designs.
 \hfil
 \vspace{5mm}
 \includegraphics[scale=0.4]{synth_results_second}
-\caption{Linkage designs that exhibit the desired dynamic behavior.  Linkages (a) and (b) are cognates that trace the exact same path with the same coordination of mechanical advantage over arc length.  The same goes for (c) and (d).}
+\caption{Linkage designs that exhibit the desired dynamic behavior.  Linkages (a) and (b) are cognates that trace the exact same path with the same coordination of mechanical advantage over arc length.  The same goes for (c) and (d).   Moving pivots are drawn in displaced positions $C'$, $D'$, $F'$, $G'$, $H'$.  Home position values are listed in Table \ref{linkage_solution_numbers}.}
 \label{synth_results}
 \end{figure}
 
@@ -1191,7 +1191,7 @@ An analysis was conducted to compare the four designs shown in Fig. \ref{synth_r
 \begin{figure}[t]
 \centering
 \includegraphics[width=1\linewidth]{PointByPointDeviation}
-\caption{The variation in mechanical advantage due to deviations in individual pivot locations for mechanisms shown in Fig. \ref{synth_results}.  Columns correspond to mechanisms (a), (b), (c), and (d).  Rows correspond to pivots $A$, $B$, $C$, $D$, $F$, $G$, and $H$.  Deviations simulate fabrication errors from the pivots' ideal locations.  Deviations were parameterized with polar coordinates.  Polar radii are indicated by line color, and polar angles are varied on the horizontal axes.  Note that if the absolute value of mechanical advantage is zero, this indicates that the deviation resulted in a branch defective linkage.  Column (a) and column (b) respectively indicate designs sensitive and insensitive to position errors.  Deviation of pivot $A$ had little effect on the resulting mechanical advantage.  Deviation of pivot $F$ had a large effect.}
+\caption{The variation in mechanical advantage due to deviations in individual pivot locations for mechanisms shown in Fig. \ref{synth_results}.  Columns correspond to mechanisms (a), (b), (c), and (d).  Rows correspond to pivots $A$, $B$, $C$, $D$, $F$, $G$, and $H$.  Deviations simulate fabrication errors from the pivots' ideal locations.  Deviations were parameterized with polar coordinates.  Polar radii are indicated by line color, and polar angles are varied on the horizontal axes.  Note that if mechanical advantage is zero, this indicates that the deviation resulted in a branch defective linkage.  Column (a) and column (b) respectively indicate designs sensitive and relatively insensitive to position errors.  Deviation of pivot $A$ had little effect on the resulting mechanical advantage.  Deviation of pivot $F$ had a large effect.}
 \label{PointByPointDeviation}
 \end{figure}
 
@@ -1247,7 +1247,7 @@ Probability of branch defect & 59.1\% & 22.8\% & 64.8\% & 48.6\% \\
 \end{table}
 
 
-To understand the effect that errors in pivot positions has on the low MA value, we shifted pivot positions off from their ideal values, given in Table \ref{linkage_solution_numbers}.
+To understand the effect that errors in pivot positions have on the low MA value, we shifted pivot positions off from their ideal values, given in Table \ref{linkage_solution_numbers}.
 Deviations were introduced to each pivot individually, and were parameterized by polar coordinates.
 Offset radii of 0.05 cm, 0.10 cm, 0.15 cm, and 0.20 cm were swept from 0 to 2$\pi$.
 For each offset, the resulting deviated linkage was analyzed and its low MA value was computed.
