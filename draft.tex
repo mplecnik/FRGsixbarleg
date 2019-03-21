@@ -64,7 +64,7 @@
 \thanks{M.~Plecnik is with the Department of Aerospace and Mechanical Engineering, University of Notre Dame, IN, 46556 USA e-mail: {\tt\small plecnikmark@nd.edu}}% <-this % stops a space
 \thanks{R.~S.~Fearing is with the Department of Electrical Engineering and Computer
 Sciences, University of California, Berkeley, CA 94720 USA e-mail: {\tt\small ronf@eecs.berkeley.edu}}% <-this % stops a space
-\thanks{Manuscript received March 14, 2019; revised Month xx, 2019.}}
+\thanks{Manuscript received March 20, 2019; revised Month xx, 2019.}}
 
 % The paper headers
 \markboth{IEEE Transactions on Robotics,~Vol.~xx, No.~xx, Month~20xx}%
@@ -109,23 +109,26 @@ Sciences, University of California, Berkeley, CA 94720 USA e-mail: {\tt\small ro
 %}
 %This work on planar six-bars is not only immediately useful, as demonstrated by a robotic leg prototype, but provides solid foundations for generalizing into spatial mechanisms.
 
-Achieving high performance dynamic behavior in a robot requires careful design of morphology.
-While optimization methods are frequently used to perform design, 
-searching for a global optimum in an intensely nonlinear and high-dimensional design space is difficult, 
-especially if stochastic seeding is involved.  
-In contrast to optimal synthesis, the role of design exploration is to survey a multitude of solutions over the entirety of the design space.
-Rather than using optimization, in this work, design requirements are encoded into a square system of equations that manifests the design space's nonlinearities.  
-Due to these nonlinearities, this system will possess a huge number of isolated roots.  
-Each root contains a description of robot geometry, thus their discovery becomes the action of design.  
-Following this, the computation of all isolated roots constitutes design space exploration.  
-These systems are heavily burdened with infinite roots, a type of degenerate root, resulting in a small percentage of physically relevant roots.  
-A recently developed algorithm termed Finite Root Generation relieves this burden. 
-In this paper, we obtain all isolated roots for a certain six-bar design problem for the first time.  
-Six-bar motions offer a level of complexity that make this topology particular viable.  
-The type of synthesis enabled here allows the design of a transmission function from motor dynamics to a loaded end effector to influence overall dynamic behavior.
-Design exploration is demonstrated for a robotic leg prototype.
-We extracted from 1,528,608 million isolated roots 941 physically relevant cognate foursomes that expand into 3764 mechanism designs before defects.
-%This work in the plane provides solid foundations for generalizations into spatial mechanisms.
+%Achieving high performance dynamic behavior in a robot requires careful design of morphology.
+%While optimization methods are frequently used to perform design, 
+%searching for a global optimum in an intensely nonlinear and high-dimensional design space is difficult, 
+%especially if stochastic seeding is involved.  
+%In contrast to optimal synthesis, the role of design exploration is to survey a multitude of solutions over the entirety of the design space.
+%Rather than using optimization, in this work, design requirements are encoded into a square system of equations that manifests the design space's nonlinearities.  
+%Due to these nonlinearities, this system will possess a huge number of isolated roots.  
+%Each root contains a description of robot geometry, thus their discovery becomes the action of design.  
+%Following this, the computation of all isolated roots constitutes design space exploration.  
+%These systems are heavily burdened with infinite roots, a type of degenerate root, resulting in a small percentage of physically relevant roots.  
+%A recently developed algorithm termed Finite Root Generation relieves this burden. 
+%In this paper, we obtain all isolated roots for a certain six-bar design problem for the first time.  
+%Six-bar motions offer a level of complexity that make this topology particular viable.  
+%The type of synthesis enabled here allows the design of a transmission function from motor dynamics to a loaded end effector to influence overall dynamic behavior.
+%Design exploration is demonstrated for a robotic leg prototype.
+%We extracted from 1,528,608 million isolated roots 941 physically relevant cognate foursomes that expand into 3764 mechanism designs before defects.
+%Design options are compared according to their sensitivity to fabrication errors.
+
+Achieving high performance dynamic behavior in a robot requires careful design of morphology. However, searching for a global optimum morphology in an intensely nonlinear design space is difficult, especially if stochastic seeding is used. In contrast to optimization, we encode design requirements into a polynomial system with a huge number of isolated roots. Each root describes an alternate robot morphology in the design space. Following this, the computation of all isolated roots constitutes design space exploration. Previously, these systems were computationally intractable, due to the heavy burden of degenerate roots. We relieve this burden by using the Finite Root Generation (FRG) method, which enabled the discovery of all isolated roots for a certain six-bar design problem for the first time. The FRG synthesis method enables the design of a transmission function from motor dynamics to a loaded end effector to influence overall dynamic behavior. In an example, we formulate synthesis equations of degree 8.8e12, obtain 1,528,608 isolated roots (estimated 99.0\%), and find 3764 physical designs. Design options are compared according to their sensitivity to fabrication errors.
+
 \end{abstract}
 
 
